@@ -12,11 +12,12 @@ import json
 
 
 def inicio_view(request):
-    marcas=listar_marcas()
-    servicios = listar_servicios()
-    categorias = listar_categorias()
-    primeras = primer_categoria()
-    return render(request, "accounts/login.html",{'marcas':marcas,'servicios':servicios,'categorias':categorias,'primeras':primeras})
+    #marcas=listar_marcas()
+    #servicios = listar_servicios()
+    #categorias = listar_categorias()
+    #primeras = primer_categoria()
+    #return render(request, "accounts/login.html",{'marcas':marcas,'servicios':servicios,'categorias':categorias,'primeras':primeras})
+    return render(request, "accounts/login.html")
 
 def login_view(request):
     return render(request, "accounts/sesion.html")
