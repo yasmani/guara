@@ -17,7 +17,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Dar permisos de ejecución al script
-RUN chmod +x start.sh
+RUN chmod +x setup.sh
 
 # Variables de entorno
 ENV PYTHONUNBUFFERED=1
