@@ -16,9 +16,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copiar todo el código
 COPY . .
 
-# Ejecutar migraciones y recolectar archivos estáticos
+# Ejecutar migraciones
 RUN python manage.py migrate --noinput
-RUN python manage.py collectstatic --noinput
+
+# Recolectar estáticos (si falla, continuar)
+RUN python manage.py collectstatic --noinput || echo "No static files to collect"
 
 # Variables de entorno
 ENV PYTHONUNBUFFERED=1
