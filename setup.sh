@@ -1,13 +1,12 @@
 #!/bin/bash
-# setup.sh
 
-echo "Instalando Python 3.11..."
-apt-get update && apt-get install -y python3.11 python3.11-venv python3.11-dev
+# Instalar Python 3.11
+apt-get update
+apt-get install -y python3.11 python3.11-dev python3.11-distutils
 
-echo "Creando entorno virtual con Python 3.11..."
-python3.11 -m venv .venv
-source .venv/bin/activate
+# Instalar pip para Python 3.11
+curl -sS https://bootstrap.pypa.io/get-pip.py | python3.11
 
-echo "Instalando dependencias..."
-pip install --upgrade pip
-pip install -r requirements.txt
+# Instalar dependencias directamente con Python 3.11
+python3.11 -m pip install --upgrade pip
+python3.11 -m pip install -r requirements.txt
