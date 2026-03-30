@@ -1,5 +1,5 @@
 
-let host = "http://127.0.0.1:8000/";
+let host = "https://guara-4mn7.onrender.com/";
 
 
 

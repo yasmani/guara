@@ -27,7 +27,7 @@ ASSETS_ROOT = os.getenv('ASSETS_ROOT', '/static/assets')
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'clave-temporal-para-desarrollo')
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'guara-4mn7.onrender.com').split(',')
 
 print(f"DEBUG is set to: {DEBUG}")
 print(f"ALLOWED_HOSTS: {ALLOWED_HOSTS}")
