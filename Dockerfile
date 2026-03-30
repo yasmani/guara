@@ -16,11 +16,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copiar todo el código
 COPY . .
 
-# Ejecutar migraciones
-RUN python manage.py migrate --noinput
-
-# Recolectar estáticos (si falla, continuar)
-RUN python manage.py collectstatic --noinput || echo "No static files to collect"
+# Dar permisos de ejecución al script
+RUN chmod +x start.sh
 
 # Variables de entorno
 ENV PYTHONUNBUFFERED=1
@@ -29,5 +26,5 @@ ENV DJANGO_SETTINGS_MODULE=guara.settings
 # Puerto
 EXPOSE 10000
 
-# Comando
-CMD ["gunicorn", "guara.wsgi:application", "--bind", "0.0.0.0:10000"]
+# Ejecutar el script de inicio
+CMD ["./start.sh"]
