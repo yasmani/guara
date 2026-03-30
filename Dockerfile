@@ -27,4 +27,4 @@ ENV DJANGO_SETTINGS_MODULE=guara.settings
 EXPOSE 10000
 
 # Ejecutar el script de inicio
-CMD ["./start.sh"]
+CMD ["./setup.sh"]
