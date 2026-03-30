@@ -1,34 +1,31 @@
-# Usar Python 3.11 como base
 FROM python:3.11-slim
 
-# Establecer directorio de trabajo
 WORKDIR /app
 
-# Instalar dependencias del sistema necesarias
+# Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
     gcc \
     libmariadb-dev \
     pkg-config \
     && rm -rf /var/lib/apt/lists/*
 
-# Copiar archivo de dependencias primero (para aprovechar caché de Docker)
+# Copiar requirements primero
 COPY requirements.txt .
-
-# Instalar dependencias de Python
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copiar todo el código del proyecto
+# Copiar todo el código
 COPY . .
 
-# Crear directorio para archivos estáticos
-RUN mkdir -p staticfiles
+# Ejecutar migraciones y recolectar archivos estáticos
+RUN python manage.py migrate --noinput
+RUN python manage.py collectstatic --noinput
 
 # Variables de entorno
 ENV PYTHONUNBUFFERED=1
 ENV DJANGO_SETTINGS_MODULE=guara.settings
 
-# Exponer el puerto que usará Render
+# Puerto
 EXPOSE 10000
 
-# Comando para ejecutar la aplicación
+# Comando
 CMD ["gunicorn", "guara.wsgi:application", "--bind", "0.0.0.0:10000"]
