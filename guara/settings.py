@@ -25,7 +25,8 @@ ASSETS_ROOT = os.getenv('ASSETS_ROOT', '/static/assets')
 
 # load production server from .env
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'clave-temporal-para-desarrollo')
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+#DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+DEBUG = True
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'guara-4mn7.onrender.com').split(',')
 
