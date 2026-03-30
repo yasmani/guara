@@ -1,0 +1,1105 @@
+{% extends "layouts/base.html" %}
+
+ {% load static %}
+
+
+{% block content %}
+
+
+
+
+
+    <!-- Productos -->
+   <style>
+    /* ESTILOS VINTAGE PROFESIONAL */
+    #productos {
+        padding: 60px 0;
+        overflow: hidden;
+  Color base más claro */
+    background-color: #F2F1F0;
+
+    /* Texturas ajustadas para el color claro */
+    background-image:
+        /* Luz cálida más sutil */
+        linear-gradient(145deg,
+            rgba(255,255,240,0.3) 0%,
+            transparent 35%,
+            transparent 65%,
+            rgba(200,190,180,0.08) 100%
+        ),
+        /* Líneas de papel más tenues */
+        repeating-linear-gradient(90deg,
+            rgba(100,90,80,0.01) 0px,
+            rgba(100,90,80,0.01) 2px,
+            transparent 2px,
+            transparent 6px
+        ),
+        /* Mancha muy sutil para dar calidez */
+        radial-gradient(circle at 20% 30%,
+            rgba(220,210,200,0.1) 0%,
+            transparent 40%
+        );
+
+    /* Sombras más suaves */
+    box-shadow:
+        inset 0 0 40px rgba(0,0,0,0.02),
+        0 8px 20px rgba(0,0,0,0.05);
+
+    /* Borde apenas perceptible */
+    border: 1px solid rgba(180,170,160,0.2);
+    border-radius: 8px;
+
+    /* Transición suave */
+    transition: all 0.3s ease;
+    position: relative;
+    }
+
+    #productos::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+
+        opacity: 0.3;
+
+         content: "";
+     background: linear-gradient(135deg,
+        transparent 50%,
+        rgba(0,0,0,0.02) 50%
+    );
+    border-radius: 0 8px 0 0;
+    pointer-events: none;
+    }
+
+        /* Servicios */
+#contacto {
+    background-color: #B8B3B0;
+    background-image:
+        linear-gradient(145deg,
+            rgba(255,255,240,0.2) 0%,
+            transparent 30%,
+            transparent 70%,
+            rgba(140,130,120,0.1) 100%
+        ),
+        repeating-linear-gradient(90deg,
+            rgba(0,0,0,0.02) 0px,
+            rgba(0,0,0,0.02) 2px,
+            transparent 2px,
+            transparent 5px
+        );
+    box-shadow:
+        inset 0 0 30px rgba(0,0,0,0.05),
+        0 10px 20px rgba(0,0,0,0.1);
+    border: 1px solid rgba(160,150,140,0.3);
+    border-radius: 4px;
+    position: relative;
+}
+
+/* Esquinas dobladas */
+#contacto::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg,
+        transparent 50%,
+        rgba(0,0,0,0.03) 50%
+    );
+    pointer-events: none;
+}
+    .section-title {
+        text-align: center;
+        margin-bottom: 50px;
+        position: relative;
+        padding-bottom: 20px;
+    }
+
+    .section-title h2 {
+          font-size: 42px;
+             font-family: 'Raleway', sans-serif;
+             font-weight: 700;
+             color: white;
+
+        margin-bottom: 15px;
+        position: relative;
+        display: inline-block;
+
+        background-color: #DBA06B;
+        border-radius: 8px;
+        padding:10px;
+    }
+
+    .section-title h2::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 2px;
+        background: #b89a7a;
+    }
+
+    .section-title p {
+         font-family: 'Raleway', sans-serif;
+            font-style: italic;
+            font-weight: 300;
+        font-size: 1.3rem;
+        color: #6b5b4d;
+        font-style: italic;
+        letter-spacing: 0.5px;
+    }
+
+    /* GALERÍA LENTA AUTOMÁTICA */
+    .brands-slider2 {
+        max-width: 1200px;
+        margin: 0 auto 60px;
+        overflow: hidden;
+        position: relative;
+        border: 15px solid #fff;
+        box-shadow: 0 10px 30px rgba(58, 44, 28, 0.15);
+        background: #fff;
+    }
+
+    .brand-slide2 {
+        display: flex;
+        animation: slideSlow 60s linear infinite;
+        width: calc(200%);
+    }
+
+    .brand-producto {
+        flex: 0 0 auto;
+        width: 200px;
+        height: 150px;
+        margin: 0 20px;
+        position: relative;
+        overflow: hidden;
+        border: 8px solid #f0ebe4;
+        box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+        transition: all 0.4s ease;
+    }
+
+    .brand-producto:hover {
+        transform: translateY(-5px) rotate(1deg);
+        border-color: #BABABA;
+        box-shadow: 0 8px 20px rgba(184, 154, 122, 0.3);
+    }
+
+    .brand-producto img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+        filter: sepia(0.2) contrast(1.1);
+    }
+
+    .brand-producto:hover img {
+        transform: scale(1.05);
+        filter: sepia(0);
+    }
+
+    @keyframes slideSlow {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+
+    /* CONTENEDOR DIVIDIDO VINTAGE */
+    .contact-container2 {
+        display: flex;
+        max-width: 1200px;
+        margin: 0 auto;
+        background: #fff;
+        border: 1px solid #e0d5c5;
+        box-shadow: 0 15px 40px rgba(58, 44, 28, 0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .contact-container2::before {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 95%;
+        height: 5px;
+        background: linear-gradient(90deg, #b89a7a, #e0d5c5, #b89a7a);
+    }
+
+    .contact-info-container2 {
+        flex: 0 0 80%;
+        padding: 50px;
+        background: #F7F7F5;
+        position: relative;
+        border-right: 1px dashed #d4c9b9;
+    }
+
+    .contact-info-container2::after {
+        content: '✦';
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        font-size: 24px;
+        color: #b89a7a;
+        opacity: 0.3;
+    }
+
+    .contact-info-container2 h4 {
+                 font-family: 'Raleway', sans-serif;
+        font-size: 2.8rem;
+             font-weight: 700;
+            font-style: normal;
+        color: #24201F;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #e0d5c5;
+        position: relative;
+    }
+
+    .contact-info-container2 h4::before {
+        color: #24201F;
+            font-size: 32px;
+             font-family: 'Raleway', sans-serif;
+
+             font-weight: 700;
+            font-style: normal;
+        position: absolute;
+        left: 0;
+        top: -5px;
+        font-size: 1.8rem;
+    }
+
+    .contact-info-container2 p {
+         font-family: 'Raleway', sans-serif;
+            font-style: italic;
+            font-weight: 300;
+        font-size: 18px;
+        line-height: 1.8;
+        color: #5d5040;
+        text-align: justify;
+        padding-right: 20px;
+        position: relative;
+    }
+
+    .contact-info-container2 p::first-letter {
+        initial-letter: 2;
+         font-family: 'Raleway', sans-serif;
+            font-style: italic;
+            font-weight: 300;
+        color: #b89a7a;
+        font-size: 20px;
+        padding-right: 10px;
+        float: left;
+        line-height: 1;
+    }
+
+    /* CONTENEDOR DE IMAGEN */
+    .box_imagen {
+        flex: 0 0 20%;
+        position: relative;
+        overflow: hidden;
+        background: #f5f0e8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .box_imagen::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, transparent 70%, rgba(184, 154, 122, 0.1) 100%);
+        z-index: 1;
+    }
+
+    .box_imagen img {
+        width: 100%;
+        height: auto;
+        max-height: 400px;
+        object-fit: cover;
+        filter: sepia(0.3) contrast(1.1) brightness(0.95);
+        border: 8px solid #fff;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transform: rotate(-2deg);
+        transition: all 0.5s ease;
+        position: relative;
+        z-index: 2;
+    }
+
+    .box_imagen:hover img {
+        transform: rotate(0deg) scale(1.02);
+        filter: sepia(0.1) contrast(1.2);
+    }
+
+    /* DECORACIONES VINTAGE */
+    .vintage-corner {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+    }
+
+    .corner-tl {
+        top: 0;
+        left: 0;
+        border-top: 2px solid #b89a7a;
+        border-left: 2px solid #b89a7a;
+    }
+
+    .corner-tr {
+        top: 0;
+        right: 0;
+        border-top: 2px solid #b89a7a;
+        border-right: 2px solid #b89a7a;
+    }
+
+    .corner-bl {
+        bottom: 0;
+        left: 0;
+        border-bottom: 2px solid #b89a7a;
+        border-left: 2px solid #b89a7a;
+    }
+
+    .corner-br {
+        bottom: 0;
+        right: 0;
+        border-bottom: 2px solid #b89a7a;
+        border-right: 2px solid #b89a7a;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 992px) {
+        .contact-container2 {
+            flex-direction: column;
+        }
+
+        .contact-info-container2 {
+            flex: 0 0 100%;
+            border-right: none;
+            border-bottom: 1px dashed #d4c9b9;
+        }
+
+        .box_imagen {
+            flex: 0 0 auto;
+            min-height: 300px;
+        }
+
+        .brand-slide2 {
+            animation-duration: 40s;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .section-title h2 {
+            font-size: 2.2rem;
+        }
+
+        .contact-info-container2 {
+            padding: 30px;
+        }
+
+        .brand-producto {
+            width: 150px;
+            height: 120px;
+        }
+    }
+</style>
+
+
+<section id="productos">
+    <div class="container">
+        <div class="section-title">
+            <h2>Catálogo de Productos</h2>
+            <p>Trabajamos con los mejores materiales del mercado</p>
+        </div>
+
+        <!-- Galería lenta automática -->
+        <div class="brands-slider2">
+            <div class="brand-slide2">
+                {% for categoria in categorias %}
+                <div class="brand-producto">
+                 <a class="categoria-link" data-categoria-id="{{categoria.id}}"><img src="{% static 'biblioteca/productos/' %}{{categoria.imagen}}" alt="{{categoria.nombre}}" title="{{categoria.nombre}}"> </a>
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+
+        <!-- Contenedor dividido vintage -->
+        <div class="contact-container2">
+            <!-- Decoración de esquinas -->
+            <div class="vintage-corner corner-tl"></div>
+            <div class="vintage-corner corner-tr"></div>
+            <div class="vintage-corner corner-bl"></div>
+            <div class="vintage-corner corner-br"></div>
+
+            <!-- Texto (80%) -->
+            <div class="contact-info-container2">
+                <h4 id="titulo_primeras">{{primeras.nombre}}</h4>
+                <p id="detalle_primeras">{{primeras.detalle}}</p>
+            </div>
+
+            <!-- Imagen (20%) -->
+            <div class="box_imagen" id="imagen_primeras">
+                <img src="{% static 'biblioteca/productos/' %}{{primeras.imagen}}">
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Pausar animación al hacer hover
+    document.querySelector('.brands-slider2').addEventListener('mouseenter', function() {
+        this.querySelector('.brand-slide2').style.animationPlayState = 'paused';
+    });
+
+    document.querySelector('.brands-slider2').addEventListener('mouseleave', function() {
+        this.querySelector('.brand-slide2').style.animationPlayState = 'running';
+    });
+
+    // Efecto parallax suave
+    window.addEventListener('scroll', function() {
+        const scrolled = window.pageYOffset;
+        const parallax = document.querySelector('#productos');
+        const rate = scrolled * 0.1;
+
+        parallax.style.backgroundPosition = `center ${rate}px`;
+    });
+
+</script>
+
+
+    <!-- Servicios -->
+    <section id="servicios" class="services">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nuestros Servicios</h2>
+                <p>Brindamos soluciones integrales para las necesidades industriales de nuestros clientes</p>
+            </div>
+            <div class="services-grid">
+                 {% for servicio in servicios%}
+
+                 <div class="service-card">
+                    <div class="service-img">
+                        <img src="{% static 'biblioteca/servicios/' %}{{servicio.imagen}}" title="{{servicio.titulo}}">
+                    </div>
+                    <div class="service-content">
+                        <h3>{{servicio.titulo}}</h3>
+                        <p>{{servicio.detalle}}</p>
+                    </div>
+
+                </div>
+
+
+                    {% endfor%}
+
+
+
+            </div>
+        </div>
+    </section>
+    <!-- Marcas -->
+    <section id="marcas" class="brands">
+        <div class="container">
+            <div class="section-title">
+                <h2>Marcas Representadas</h2>
+                <p>Trabajamos con las mejores marcas con excelentes resultados</p>
+            </div>
+            <div class="brands-slider">
+                <div class="brand-slide">
+                    <!-- Marcas se duplican para efecto slider infinito -->
+                    {% for marca in marcas%}
+                    <div class="brand-item"><img src="{% static 'biblioteca/marcas/' %}{{marca.imagen}}" title="{{marca.nombre}}"></div>
+
+                    {% endfor%}
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contacto -->
+    <section id="contacto">
+        <div class="container">
+            <div class="section-title">
+                <h2>Contáctenos</h2>
+                <p>Estamos aquí para responder a sus consultas y ofrecerle la mejor solución industrial</p>
+            </div>
+            <div class="contact-container">
+                <div class="contact-info-container">
+                    <h3>Información de Contacto</h3>
+                    <p>No dude en ponerse en contacto con nosotros para cualquier consulta sobre nuestros productos y servicios.</p>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <h4>Dirección</h4>
+                                <p>Av. Canal lsuto C/ Landivar Edif. Los Cedros, Santa Cruz, Bolivia</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div>
+                                <h4>Teléfono</h4>
+                                <p>79949364 - 65070403</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h4>Email</h4>
+                                <p>guara.corp@gmail.com</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form">
+
+
+    <style>
+
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+             font-family: 'Raleway', sans-serif;
+            font-style: italic;
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            font-family: 'Raleway', sans-serif;
+            font-style: italic;
+        }
+        .btn-submit {
+            background: #428C5B;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+
+             font-family: 'Raleway', sans-serif;
+            font-style: italic;
+            font-weight: 300;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+        .btn-submit:hover {
+            background: #128C7E;
+        }
+        .btn-whatsapp {
+            background: #428C5B;
+            color: white;
+
+             font-family: 'Raleway', sans-serif;
+            font-style: italic;
+            font-weight: 300;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            margin: 10px 5px;
+        }
+        .btn-whatsapp:hover {
+            background: #128C7E;
+        }
+        .result-container {
+            margin-top: 30px;
+            padding: 20px;
+            background: #e8f5e9;
+            border-radius: 5px;
+            display: none;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+        .whatsapp-icon {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+
+           .captcha-error {
+        color: #e74c3c;
+        font-size: 14px;
+        margin-top: 10px;
+        display: none;
+    }
+
+    .g-recaptcha {
+        margin: 20px 0;
+        transform: scale(0.9);
+        transform-origin: 0 0;
+    }
+
+    @media (max-width: 768px) {
+        .g-recaptcha {
+            transform: scale(0.85);
+        }
+    }
+    </style>
+
+
+        <h2 style="text-align: center; color: #075E54;">
+            <span class="whatsapp-icon">📱</span> Solicitud por WhatsApp
+        </h2>
+
+        <form id="whatsappForm">
+            {% csrf_token %}
+
+                    <div class="form-group">
+                        <label>Nombre completo *</label>
+                        <input type="text" name="nombre" id="nombre" required placeholder="Ej: Juan Pérez">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Correo electrónico *</label>
+                        <input type="email" name="correo" required placeholder="ejemplo@empresa.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Teléfono *</label>
+                        <input type="tel" name="telefono" required
+                               pattern="[0-9]{7,8}"
+                               placeholder="Ej: 70000000">
+                       <!-- <small>Ingrese su número con código de área</small>-->
+                    </div>
+
+                    <div class="form-group">
+                        <label>Asunto *</label>
+                           <select id="asunto" name="asunto" required>
+                                <option value="">-- Seleccione --</option>
+                                <option value="Cotización de uniformes">👔 Cotización de uniformes</option>
+                                <option value="Ropa de seguridad industrial">🛡️ Ropa de seguridad industrial</option>
+                               <!-- <option value="Calzado de seguridad">👢 Calzado de seguridad</option> -->
+                                <option value="Personalización de prendas">🎨 Personalización de prendas</option>
+                                <option value="Pedido urgente">🚚 Pedido urgente</option>
+                                <option value="Consulta general">❓ Consulta general</option>
+                            </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Detalle del requerimiento *</label>
+                        <textarea name="detalle" rows="4" required
+                                  placeholder="Describa qué necesita: tipo de prenda, cantidad, materiales, colores, etc."></textarea>
+                    </div>
+
+
+                    <!-- CAPTCHA v2 -->
+                        <div class="g-recaptcha"
+                             data-sitekey="6Lc4IFgsAAAAABZdv3AanrR-3qskCVIxjcJ7eyRv"
+                             data-callback="onCaptchaSuccess"
+                             data-expired-callback="onCaptchaExpired"
+                             data-error-callback="onCaptchaError">
+                        </div>
+
+                        <div class="captcha-error" id="captchaError">
+                            ❌ Por favor, verifique que no es un robot.
+                        </div>
+
+                        <button type="submit" class="btn-submit" id="submitBtn" disabled>
+                            <span class="whatsapp-icon">📱</span> Enviar solicitud
+                        </button>
+
+                </form>
+
+                <script src="https://www.google.com/recaptcha/api.js"></script>
+
+                <div class="loading" id="loading">
+                    <p>⌛ Generando mensaje para WhatsApp...</p>
+                </div>
+
+                <div class="result-container" id="resultContainer">
+                    <h3>✅ Solicitud creada exitosamente!</h3>
+                    <p><strong>Referencia:</strong> <span id="referenceNumber"></span></p>
+                    <p>Ahora puedes enviar la solicitud a nuestro equipo:</p>
+
+                    <div style="text-align: center; margin: 20px 0;">
+                        <a id="whatsappLink" class="btn-whatsapp" target="_blank">
+                            <span class="whatsapp-icon">📱</span> Abrir WhatsApp para enviar
+                        </a>
+
+                        <p style="font-size: 14px; color: #666; margin-top: 10px;">
+                            <em>Se abrirá WhatsApp Web/App con el mensaje pre-escrito.<br>
+                            Solo debes hacer clic en "Enviar".</em>
+                        </p>
+                    </div>
+
+                    <div style="background: #f0f0f0; padding: 15px; border-radius: 5px; margin-top: 20px;">
+                        <p><strong>¿No se abrió WhatsApp?</strong></p>
+                        <p style="font-size: 14px;">
+                            1. Asegúrate de tener WhatsApp instalado<br>
+                            2. Copia este enlace manualmente:<br>
+                            <input type="text" id="linkCopy" style="width: 100%; padding: 8px; margin-top: 5px;" readonly>
+                        </p>
+                        <button onclick="copiarEnlace()" style="padding: 8px 15px; margin-top: 10px;">
+                            📋 Copiar enlace
+                        </button>
+                    </div>
+                </div>
+
+                <div id="errorContainer" style="display: none; padding: 15px; background: #ffebee; border-radius: 5px; margin-top: 20px;">
+                    <p style="color: #c62828; margin: 0;">❌ <span id="errorMessage"></span></p>
+                </div>
+
+
+
+
+                    <script>
+                    // Variables para control del CAPTCHA
+                    let captchaVerified = false;
+                    let captchaResponse = '';
+
+                    // Callback cuando el CAPTCHA es completado exitosamente
+                    function onCaptchaSuccess(response) {
+
+                        captchaVerified = true;
+                        captchaResponse = response;
+
+                        // Habilitar botón de enviar
+                        const submitBtn = document.querySelector('.btn-submit');
+                        if (submitBtn) {
+                            submitBtn.disabled = false;
+                            submitBtn.style.opacity = '1';
+                            submitBtn.style.cursor = 'pointer';
+                        }
+                        document.getElementById('captchaError').style.display = 'none';
+                    }
+
+                    // Callback cuando el CAPTCHA expira
+                    function onCaptchaExpired() {
+
+                        captchaVerified = false;
+                        captchaResponse = '';
+
+                        // Deshabilitar botón de enviar
+                        const submitBtn = document.querySelector('.btn-submit');
+                        if (submitBtn) {
+                            submitBtn.disabled = true;
+                            submitBtn.style.opacity = '0.7';
+                            submitBtn.style.cursor = 'not-allowed';
+                        }
+                    }
+
+                    // Callback cuando hay error en el CAPTCHA
+                    function onCaptchaError() {
+                        console.log('Error en CAPTCHA');
+                        captchaVerified = false;
+
+                        document.getElementById('captchaError').style.display = 'block';
+                        document.getElementById('captchaError').textContent = '❌ Error en la verificación. Intente nuevamente.';
+                    }
+
+                    // Función para verificar manualmente el CAPTCHA
+                    function verificarCaptcha() {
+                        if (typeof grecaptcha !== 'undefined') {
+                            const response = grecaptcha.getResponse();
+
+                            if (response.length === 0) {
+                                // CAPTCHA no completado
+                                document.getElementById('captchaError').style.display = 'block';
+                                document.getElementById('captchaError').textContent = '❌ Por favor, complete la verificación CAPTCHA.';
+
+                                // Scroll al CAPTCHA
+                                const captchaElement = document.querySelector('.g-recaptcha');
+                                if (captchaElement) {
+                                    captchaElement.scrollIntoView({
+                                        behavior: 'smooth',
+                                        block: 'center'
+                                    });
+                                }
+
+                                return false;
+                            }
+
+                            // CAPTCHA completado
+                            captchaResponse = response;
+                            document.getElementById('captchaError').style.display = 'none';
+                            return true;
+                        }
+                        return false;
+                    }
+
+// Modificar el evento submit del formulario
+        document.getElementById('whatsappForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Verificar CAPTCHA
+            if (!verificarCaptcha()) {
+                return;
+            }
+
+            // Mostrar loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('resultContainer').style.display = 'none';
+            document.getElementById('errorContainer').style.display = 'none';
+
+            // Obtener datos del formulario
+            const formData = new FormData(this);
+
+        // Agregar la respuesta del CAPTCHA al FormData (IMPORTANTE)
+        formData.append('g-recaptcha-response', captchaResponse);
+
+    // Enviar a Django con validación de CAPTCHA
+    fetch('/enviar-whatsapp', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la respuesta del servidor');
+        }
+        return response.json();
+    })
+    .then(data => {
+        document.getElementById('loading').style.display = 'none';
+
+
+
+        if (data.success) {
+            // Mostrar resultados
+            document.getElementById('referenceNumber').textContent = data.reference || 'N/A';
+
+            // Configurar enlace de WhatsApp
+            const whatsappLink = document.getElementById('whatsappLink');
+            if (data.whatsapp_link) {
+                whatsappLink.href = data.whatsapp_link;
+
+                // Mostrar enlace para copiar
+                document.getElementById('linkCopy').value = data.whatsapp_link;
+
+                // Mostrar contenedor de resultados
+                document.getElementById('resultContainer').style.display = 'block';
+
+                // Resetear CAPTCHA
+                if (typeof grecaptcha !== 'undefined') {
+                    grecaptcha.reset();
+                }
+                captchaVerified = false;
+
+                // Deshabilitar botón de enviar nuevamente
+                const submitBtn = document.querySelector('.btn-submit');
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.style.opacity = '0.7';
+                    submitBtn.style.cursor = 'not-allowed';
+                }
+
+                // Opcional: Abrir WhatsApp automáticamente después de 1 segundo
+                setTimeout(() => {
+                    window.open(data.whatsapp_link, '_blank');
+                }, 1000);
+
+            } else {
+                document.getElementById('errorMessage').textContent = 'No se pudo generar el enlace de WhatsApp.';
+                document.getElementById('errorContainer').style.display = 'block';
+            }
+
+        } else {
+            // Mostrar error
+            document.getElementById('errorMessage').textContent = data.error || 'Error desconocido';
+            document.getElementById('errorContainer').style.display = 'block';
+
+            // Resetear CAPTCHA en caso de error
+            if (data.captcha_error && typeof grecaptcha !== 'undefined') {
+                grecaptcha.reset();
+                captchaVerified = false;
+                const submitBtn = document.querySelector('.btn-submit');
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                }
+                document.getElementById('captchaError').style.display = 'block';
+                document.getElementById('captchaError').textContent = '❌ ' + data.captcha_error;
+            }
+                }
+            })
+            .catch(error => {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('errorMessage').textContent = 'Error de conexión. Intente nuevamente.';
+                document.getElementById('errorContainer').style.display = 'block';
+                console.error('Error:', error);
+
+                // Resetear CAPTCHA
+                if (typeof grecaptcha !== 'undefined') {
+                    grecaptcha.reset();
+                }
+            });
+        });
+
+        // Validación en tiempo real del botón
+        window.addEventListener('load', function() {
+            // Deshabilitar botón inicialmente si existe CAPTCHA
+            const submitBtn = document.querySelector('.btn-submit');
+            if (submitBtn && typeof grecaptcha !== 'undefined') {
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = '0.7';
+                submitBtn.style.cursor = 'not-allowed';
+
+                // Tooltip para indicar que debe completar CAPTCHA
+                submitBtn.title = 'Complete la verificación CAPTCHA para habilitar';
+            }
+        });
+
+        // Agregar animación CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0% { transform: scale(0.9); }
+                50% { transform: scale(0.95); }
+                100% { transform: scale(0.9); }
+            }
+
+            .captcha-error {
+                color: #e74c3c;
+                font-size: 14px;
+                margin-top: 10px;
+                display: none;
+            }
+
+            .g-recaptcha {
+                margin: 20px 0;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Asegurar que el botón tiene el ID correcto
+        document.addEventListener('DOMContentLoaded', function() {
+            const submitBtn = document.querySelector('.btn-submit');
+            if (submitBtn && !submitBtn.id) {
+                submitBtn.id = 'submitBtn';
+            }
+        });
+
+        function copiarEnlace() {
+            const linkInput = document.getElementById('linkCopy');
+            if (linkInput && linkInput.value) {
+                linkInput.select();
+                document.execCommand('copy');
+                alert('✅ Enlace copiado al portapapeles');
+            }
+        }
+
+        // Abrir WhatsApp automáticamente al cargar si hay un enlace en la URL (opcional)
+        window.addEventListener('load', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const whatsappLink = urlParams.get('whatsapp_link');
+            if (whatsappLink) {
+                window.open(whatsappLink, '_blank');
+            }
+        });
+
+
+
+   // Obtener token CSRF
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        // Añadir event listener a todos los links de categoría
+        const categoriaLinks = document.querySelectorAll('.categoria-link');
+
+        categoriaLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const categoriaId = this.getAttribute('data-categoria-id');
+
+
+                // Enviar datos mediante fetch
+                fetch('/ver_categoria', {  // Asegúrate de que esta URL es correcta
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken,
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify({
+                        categoria_id: categoriaId
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error en la respuesta del servidor');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+
+
+                    // Verificar que la respuesta tenga los datos esperados
+                    if (data.success) {
+
+
+                            const tituloElement = document.getElementById('titulo_primeras');
+                            const detalleElement = document.getElementById('detalle_primeras');
+                            const imagenContainer = document.getElementById('imagen_primeras');
+
+                    tituloElement.textContent = data.nombre;
+                    detalleElement.textContent = data.detalle;
+
+
+                    imagenContainer.innerHTML = `<img src="${data.imagen_url}" alt="${data.nombre}">`;
+
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+
+                });
+            });
+        });
+
+
+
+        window.addEventListener('scroll', () => {
+    const header = document.querySelector('header');
+
+    if (!header) {
+        console.error('Header no encontrado');
+        return; // Salir si no existe
+    }
+
+    if (window.scrollY > 100) {
+    header.style.backgroundColor = 'rgba(33, 31, 31, 0.80)'; // Tu color semi-transparente
+    } else {
+        header.style.backgroundColor = 'transparent'; // Totalmente transparente
+    }
+});
+        </script>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock content %}

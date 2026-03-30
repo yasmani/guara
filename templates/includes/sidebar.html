@@ -1,0 +1,61 @@
+
+         {% load static %}
+
+
+  <div class="col-md-3 col-lg-2 sidebar p-0">
+                <div class="p-3">
+                    <ul class="nav flex-column">
+
+                         <li class="nav-item">
+                            <a class="nav-link {% if 'nuevo' in segment %} active {% endif %}" href="{% url 'nuevo' %}">
+                                <i class="bi bi-cart me-2"></i>Inicio
+                            </a>
+                        </li>
+
+                           <li  class="nav-item">
+                            <a class="nav-link {% if 'arqueos' in segment %} active {% endif %}" href="{% url 'arqueos' %}">
+                            <i class="bi bi-sticky me-2"></i>Arqueos
+                            </a>
+                            </li>
+
+                              <li  class="nav-item">
+                            <a class="nav-link  {% if 'ventas' in segment %} active {% endif %}" href="{% url 'ventas' %}">
+                              <i class="bi bi-cash-coin me-2"></i>Ventas
+                            </a>
+                            </li>
+                        <!--<li class="nav-item">
+                            <a class="nav-link">
+                                <i class="bi bi-box-seam me-2"></i>Inventario
+                            </a>
+                        </li> -->
+                        <li class="nav-item">
+                            <a class="nav-link {% if 'productos' in segment %} active {% endif %}" href="{% url 'productos' %}">
+                                <i class="bi bi-capsule me-2"></i>Inventario
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link {% if 'clientes' in segment %} active {% endif %}" href="{% url 'clientes' %}">
+                                <i class="bi bi-people me-2"></i>Clientes
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if 'proveedor' in segment %} active {% endif %}" href="{% url 'proveedor' %}">
+                                <i class="bi bi-truck me-2"></i>Proveedores
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link {% if 'grafico' in segment %} active {% endif %}" href="{% url 'grafico' %}" >
+                                <i class="bi bi-speedometer2 me-2"></i>Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if 'reporte' in segment %} active {% endif %}" href="{% url 'reporte' %}">
+                                <i class="bi bi-graph-up me-2"></i>Reportes
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+

@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+ {% load static %}
+
+<html lang="es">
+<head>
+       <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guara - Indumentaria Corporativa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="{% static 'biblioteca/logo/IMG-20251216-WA0012.ico' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!--  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"> -->
+
+<!-- POR ESTO (Open Sans Light) -->
+<!--<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">-->
+
+<link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+    <title>
+        {% block title %}{% endblock %}
+    </title>
+
+
+
+    <style>
+
+
+       /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-weight: 550;
+        }
+
+        body {
+            color: #333;
+            line-height: 1.6;
+             font-family: 'Raleway', sans-serif;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 25px;
+            background-color: #1e549f;
+            color: white;
+            border-radius: 4px;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #153e7a;
+        }
+
+        section {
+            padding: 60px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title h2 {
+            font-size: 42px;
+             font-family: 'Raleway', sans-serif;
+             font-weight: 700;
+             color: white;
+            background-color: #DBA06B;
+        border-radius: 8px;
+        padding:10px;
+            font-style: normal;
+            margin-bottom: 10px;
+        }
+
+        .section-title p {
+            color: #666;
+            max-width: 700px;
+            font-family: 'Raleway', sans-serif;
+            font-style: italic;
+            font-weight: 300; /* Light */
+            margin: 0 auto;
+        }
+
+        .cajasuperior{
+             background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url('{% static 'biblioteca/logo/principal.png' %}') no-repeat center center/cover;
+        }
+        /* Header */
+        header {
+
+            color: #242424;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .contact-info {
+            display: flex;
+            gap: 20px;
+        }
+
+        .contact-info span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: background-color 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .header-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            height: 80px;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-text h1 {
+            font-size: 24px;
+            line-height: 1.2;
+        }
+
+        .logo-text span {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 25px;
+        }
+
+        nav a {
+            font-weight: 600;
+            transition: color 0.3s ease;
+            padding: 5px 0;
+            position: relative;
+            color:#C4BA86;
+        }
+
+        nav a:hover {
+            color: #ffcc00;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: #ffcc00;
+            bottom: 0;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            font-size: 24px;
+            background: none;
+            border: none;
+            color: #242424;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+
+            color: white;
+            text-align: center;
+            padding: 180px 0 100px;
+        }
+
+        .hero h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+
+        /* Servicios */
+.services {
+    background-color: #B8B3B0;
+    background-image:
+        linear-gradient(145deg,
+            rgba(255,255,240,0.2) 0%,
+            transparent 30%,
+            transparent 70%,
+            rgba(140,130,120,0.1) 100%
+        ),
+        repeating-linear-gradient(90deg,
+            rgba(0,0,0,0.02) 0px,
+            rgba(0,0,0,0.02) 2px,
+            transparent 2px,
+            transparent 5px
+        );
+    box-shadow:
+        inset 0 0 30px rgba(0,0,0,0.05),
+        0 10px 20px rgba(0,0,0,0.1);
+    border: 1px solid rgba(160,150,140,0.3);
+    border-radius: 4px;
+    position: relative;
+}
+
+/* Esquinas dobladas */
+.services::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg,
+        transparent 50%,
+        rgba(0,0,0,0.03) 50%
+    );
+    pointer-events: none;
+}
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .service-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .service-img {
+            height:250px;
+            overflow: hidden;
+        }
+
+        .service-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .service-card:hover .service-img img {
+            transform: scale(1.05);
+        }
+
+        .service-content {
+            padding: 25px;
+        }
+
+        .service-content h3 {
+            color: #303030;
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-family: 'Raleway', sans-serif;
+             font-weight: 700;
+            font-style: normal;
+        }
+
+
+        .service-content p {
+
+             font-family: 'Raleway', sans-serif;
+            font-style: italic;
+            font-weight: 300; /* Light */
+
+        }
+        /* Productos */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-icon {
+            font-size: 48px;
+            color: #1e549f;
+            margin-bottom: 20px;
+        }
+
+        .product-card h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        /* Marcas */
+        .brands {
+    padding: 60px 0;
+        overflow: hidden;
+  Color base más claro */
+    background-color: #F2F1F0;
+
+    /* Texturas ajustadas para el color claro */
+    background-image:
+        /* Luz cálida más sutil */
+        linear-gradient(145deg,
+            rgba(255,255,240,0.3) 0%,
+            transparent 35%,
+            transparent 65%,
+            rgba(200,190,180,0.08) 100%
+        ),
+        /* Líneas de papel más tenues */
+        repeating-linear-gradient(90deg,
+            rgba(100,90,80,0.01) 0px,
+            rgba(100,90,80,0.01) 2px,
+            transparent 2px,
+            transparent 6px
+        ),
+        /* Mancha muy sutil para dar calidez */
+        radial-gradient(circle at 20% 30%,
+            rgba(220,210,200,0.1) 0%,
+            transparent 40%
+        );
+
+    /* Sombras más suaves */
+    box-shadow:
+        inset 0 0 40px rgba(0,0,0,0.02),
+        0 8px 20px rgba(0,0,0,0.05);
+
+    /* Borde apenas perceptible */
+    border: 1px solid rgba(180,170,160,0.2);
+    border-radius: 8px;
+
+    /* Transición suave */
+    transition: all 0.3s ease;
+    position: relative;
+    }
+
+
+/* Esquina doblada apenas perceptible */
+.brands::after {
+     content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+
+        opacity: 0.3;
+
+         content: "";
+     background: linear-gradient(135deg,
+        transparent 50%,
+        rgba(0,0,0,0.02) 50%
+    );
+    border-radius: 0 8px 0 0;
+    pointer-events: none;
+}
+
+        .brands-slider {
+            display: flex;
+            overflow: hidden;
+            position: relative;
+            height: 120px;
+            align-items: center;
+        }
+
+
+        .brand-slide {
+            display: flex;
+            animation: slide 20s linear infinite;
+        }
+
+
+        .brand-item {
+            flex: 0 0 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 20px;
+        }
+
+
+        .brand-item img {
+            max-width: 100%;
+            max-height: 80px;
+            filter: grayscale(0%);
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+
+        .brand-item img:hover {
+            filter: grayscale(50%);
+            opacity: 1;
+        }
+
+        @keyframes slide {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Contacto */
+        .contact-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .contact-info-container h3 {
+           font-family: 'Raleway', sans-serif;
+
+             font-weight: 700;
+            font-style: normal;
+            color: #241606;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .contact-info-container p {
+            font-family: 'Raleway', sans-serif;
+            font-style: italic;
+            font-weight: 300; /* Light */
+        }
+        .contact-details {
+            margin-top: 30px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .contact-icon {
+            color: #1e549f;
+            font-size: 20px;
+            margin-right: 15px;
+            margin-top: 5px;
+        }
+
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .contact-form textarea {
+            height: 150px;
+            resize: vertical;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1c1c1c;
+            color: #bbb;
+            padding: 60px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            color: white;
+            font-size: 18px;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #1e549f;
+            display: inline-block;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #ffcc00;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .header-top {
+                display: none;
+            }
+
+            .hero h2 {
+                font-size: 36px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            nav {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background-color: #FFFAF2;
+                padding: 20px;
+                transform: translateY(-100%);
+                opacity: 0;
+                transition: all 0.3s ease;
+                visibility: hidden;
+            }
+
+            nav.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .hero {
+                padding: 150px 0 80px;
+            }
+
+            .hero h2 {
+                font-size: 30px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            section {
+                padding: 40px 0;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .logo-text h1 {
+                font-size: 20px;
+            }
+
+            .section-title h2 {
+                font-size: 26px;
+            }
+
+            .hero {
+                padding: 130px 0 60px;
+            }
+        }
+</style>
+
+{% block stylesheets %}
+
+   {% endblock stylesheets %}
+
+</head>
+
+    <body>
+
+<!-- Header -->
+<div class="cajasuperior">
+    <header>
+
+        <div class="container">
+            <!--<div class="header-top">
+               <div class="contact-info">
+                    <span><i class="fas fa-phone"></i> 79949364 - 65070403</span>
+                    <span><i class="fas fa-envelope"></i> guara.corp@gmail.com</span>
+                   <span><i class="fas fa-clock"></i> Lun - Vie: 8:00 - 18:00</span>
+                </div>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.tiktok.com/@guara.sc" target="_blank"><i class="fab fa-tiktok"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div> -->
+            <div class="header-main">
+                <a href="#" class="logo">
+                    <div class="logo-img">
+                        <!-- Logo simulado -->
+                        <img width="160" height="500" src="{% static 'biblioteca/logo/LOGO GUARA BLANCO.png' %}">
+
+
+                    </div>
+
+                </a>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <nav id="mainNav">
+                    <ul>
+                        <li><a href="#inicio">Inicio</a></li>
+                        <li><a href="#servicios">Servicios</a></li>
+                        <li><a href="#productos">Productos</a></li>
+                        <li><a href="#marcas">Marcas</a></li>
+                        <li><a href="#contacto">Contacto</a></li>
+                        <!--<li><a href="{% url 'tienda' %}">Tienda On line</a></li>-->
+                        <li><a href="{% url 'login_guara' %}">Administracion</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+    </header>
+
+     <!-- Hero Section -->
+    <section class="hero" id="inicio">
+        <div class="container">
+            <h2>Vestimos tu equipo, reflejamos tu identidad✨</h2>
+            <p>¿Tienes una empresa del tipo industrial y necesitas ropa para tu personal? <br>
+            ¡Te la confeccionamos a gusto! Podemos hacer diversos tipos de prenda</p>
+            <a href="#contacto" class="btn">Contáctenos</a>
+        </div>
+    </section>
+
+    </div>
+
+               {% block content %}{% endblock content %}
+
+
+ <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>GUARA</h3>
+                    <p>Empresa de diseño y confeccion de indumentaria industrial, uniformes, escolares con años de experiencia en el mercado</p>
+                    <div class="social-icons" style="margin-top: 20px;">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.tiktok.com/@guara.sc" target="_blank"><i class="fab fa-tiktok"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul class="footer-links">
+                        <li><a href="#inicio">Inicio</a></li>
+                        <li><a href="#servicios">Servicios</a></li>
+                        <li><a href="#productos">Productos</a></li>
+                        <li><a href="#marcas">Marcas</a></li>
+                        <li><a href="#contacto">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Servicios</h3>
+                    <ul class="footer-links">
+                         {% for servicio in servicios%}
+                        <li><a href="#">{{servicio.titulo}}</a></li>
+
+                        {% endfor %}
+                    </ul>
+                </div>
+              <!--  <div class="footer-column">
+                    <h3>Horario de Atención</h3>
+                    <p><strong>Lunes a Viernes:</strong><br>8:00 - 12:00 / 14:00 - 18:00</p>
+                    <p><strong>Sábados:</strong><br>8:00 - 12:00</p>
+                    <p><strong>Domingos:</strong><br>Cerrado</p>
+                </div>-->
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 NEGOCIODIGITAL - Sistemas Web. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+<script>
+        // Menú móvil
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mainNav = document.getElementById('mainNav');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+            const icon = mobileMenuBtn.querySelector('i');
+            if (mainNav.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        // Cerrar menú al hacer clic en enlace
+        const navLinks = document.querySelectorAll('nav a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mainNav.classList.remove('active');
+                const icon = mobileMenuBtn.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+        });
+
+        // Formulario de contacto
+        const formContacto = document.getElementById('formContacto');
+        formContacto.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('¡Gracias por su mensaje! Nos pondremos en contacto con usted pronto.');
+            formContacto.reset();
+        });
+
+        // Scroll suave para enlaces internos
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+
+
+
+
+    </script>
+
+
+<script type="text/javascript">
+  (function(d, t) {
+      var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+      v.onload = function() {
+        window.voiceflow.chat.load({
+          verify: { projectID: '6977cc2448d9b64024faf55e' },
+          url: 'https://general-runtime.voiceflow.com',
+          versionID: 'production',
+          voice: {
+            url: "https://runtime-api.voiceflow.com"
+          }
+        });
+      }
+      v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+  })(document, 'script');
+</script>
+</body>
+</html>

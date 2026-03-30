@@ -1,0 +1,2459 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+         {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guara - Panel de Control</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+        <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+
+     <script src="{% static 'assets/js/ajax.js' %}"></script>
+     <script src="{% static 'assets/js/sweetalert2.all.min.js' %}"></script>
+
+      <link rel="stylesheet" href="{% static 'assets/css/sweetalert2.min.css' %}">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+      <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
+        <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+
+<!-- Buttons -->
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+
+<!-- Dependencias -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+<!-- En el head o antes del cierre del body -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Versión con complementos (recomendado) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<!-- Si quieres los complementos separados -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+
+<script src="https://cdn.jsdelivr.net/gh/hongru/canvas2image@master/canvas2image.js"></script>
+<!-- Versión específica (1.4.1 estable) -->
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+
+    <link rel="icon" href="{% static 'biblioteca/logo/IMG-20251216-WA0012.ico' %}">
+    <style>
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header de administración */
+        .admin-header {
+            background: linear-gradient(135deg, #544F4C 0%, #FFD1BD 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .admin-header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .admin-logo h1 {
+            font-size: 24px;
+        }
+
+        .admin-logo span {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .admin-nav ul {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+
+        .admin-nav a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .admin-nav a:hover, .admin-nav a.active {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Panel de administración */
+        .admin-panel {
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+
+        .admin-sidebar {
+            width: 250px;
+            background-color: white;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+            padding: 30px 0;
+        }
+
+        .admin-content {
+            flex: 1;
+            padding: 30px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .sidebar-menu a {
+            display: block;
+            padding: 15px 25px;
+            color: #555;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-menu a:hover {
+            background-color: #f8f9fa;
+            color: #1e549f;
+            border-left: 4px solid #1e549f;
+        }
+
+        .sidebar-menu a.active {
+            background-color: #f0f7ff;
+            color: #1e549f;
+            border-left: 4px solid #1e549f;
+            font-weight: 600;
+        }
+
+        .sidebar-menu i {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Contenido de administración */
+        .admin-section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .admin-section.active {
+            display: block;
+        }
+
+     .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section-header h2 {
+            color: #1e549f;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background-color: #1e549f;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background-color: #153e7a;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        /* Tablas */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        thead {
+            background-color: #f8f9fa;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #495057;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #dee2e6;
+            vertical-align: middle;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            position: relative;
+        }
+
+.badge {
+    background-color: #ff4444;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: bold;
+    min-width: 18px;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+        .edit-btn {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+
+        .info-btn {
+            background-color: #278BF5;
+            color: white;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        /* Formularios */
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: #1e549f;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(30, 84, 159, 0.1);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .image-preview {
+            width: 150px;
+            height: 150px;
+            border: 1px dashed #ced4da;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .image-preview img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            color: #1e549f;
+            margin: 0;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #6c757d;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .admin-panel {
+                flex-direction: column;
+            }
+
+            .admin-sidebar {
+                width: 100%;
+                padding: 0;
+            }
+
+            .sidebar-menu {
+                display: flex;
+                overflow-x: auto;
+            }
+
+            .sidebar-menu li {
+                border-bottom: none;
+                border-right: 1px solid #f0f0f0;
+            }
+
+            .sidebar-menu a {
+                white-space: nowrap;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .admin-header-content {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .actions {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+
+        .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
+}
+
+/* Opcional: estilo para indicar que hay más contenido */
+.table-responsive::-webkit-scrollbar {
+    height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,0.2);
+    border-radius: 4px;
+}
+
+/* CONTENEDOR DE BOTONES */
+.dt-buttons {
+  margin-bottom: 15px;
+}
+
+/* BOTONES */
+.dt-button {
+  background: #3483fa !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 6px !important;
+  padding: 8px 14px !important;
+  margin-right: 6px !important;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+/* HOVER */
+.dt-button:hover {
+  background: #2968c8 !important;
+}
+
+/* BOTÓN PDF */
+.buttons-pdf {
+  background: #dc2626 !important;
+}
+
+/* BOTÓN EXCEL */
+.buttons-excel {
+  background: #15803d !important;
+}
+
+/* BOTÓN CSV */
+.buttons-csv {
+  background: #374151 !important;
+}
+
+/* BOTÓN PRINT */
+.buttons-print {
+  background: #6b7280 !important;
+}
+
+
+
+    .toast {
+        border-radius: 8px !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+    }
+
+    .toast-success {
+        background-color: #28a745 !important;
+    }
+
+    .toast-error {
+        background-color: #dc3545 !important;
+    }
+
+    .toast-warning {
+        background-color: #ffc107 !important;
+        color: #212529 !important;
+    }
+
+    .toast-info {
+        background-color: #17a2b8 !important;
+    }
+
+    /* Ajustar posición en móviles */
+    @media (max-width: 768px) {
+        .toast-top-right {
+            top: 12px;
+            right: 12px;
+        }
+        .toast {
+            width: 90% !important;
+            margin: 0 auto !important;
+        }
+    }
+
+
+
+
+        .chart-container {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .chart-header h3 {
+            color: #2c3e50;
+            font-size: 18px;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 300px;
+        }
+
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+      .filter-buttons {
+    display: flex;
+    gap: 10px;
+
+}
+
+.filter-buttons a,
+.filter-buttons input {
+    display: block;
+    padding: 12px 20px; /* Reducir padding en móvil */
+    color: #06022c;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    text-decoration: none;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    gap: 5px;
+    flex: 1 1 auto; /* Permite que crezcan y se ajusten */
+    min-width: 120px; /* Ancho mínimo */
+}
+
+/* Para pantallas pequeñas */
+@media (max-width: 768px) {
+    .filter-buttons {
+        flex-direction: column; /* Apila verticalmente */
+        width: 100%;
+    }
+
+    .filter-buttons a,
+    .filter-buttons input {
+        width: 100%; /* Ocupa todo el ancho */
+        justify-content: center; /* Centra el contenido */
+        padding: 15px; /* Padding uniforme */
+    }
+
+    .controls {
+        flex-direction: column; /* También apila los controles */
+        gap: 10px;
+    }
+}
+
+
+   /* Sección de pagos */
+        .payment-details {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .payment-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .payment-item:last-child {
+            border-bottom: none;
+        }
+
+        .payment-info {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .payment-date {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        .payment-amount {
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+    </style>
+</head>
+<body>
+      {% load static %}
+    <!-- Header de Administración -->
+
+
+
+
+
+    <header class="admin-header">
+        <div class="container">
+            <div class="admin-header-content">
+                <div class="admin-logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-cogs fa-2x"></i>
+                    </div>
+                    <div>
+                        <h1>Panel de Administración</h1>
+                        <span>Guara - Indumentaria Corporativa</span>
+                    </div>
+                </div>
+                <nav class="admin-nav">
+                    <ul>
+                        <li><a href="{% url 'inicio' %}"><i class="fas fa-external-link-alt"></i> Ver Sitio Web</a></li>
+                        <li><a href="{% url 'logout' %}" ><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+{% if messages %}
+    <script>
+        $(document).ready(function() {
+            {% for message in messages %}
+                // Mapear las tags de Django a tipos de Toastr
+                var toastrType = 'info';
+
+                switch('{{ message.tags }}') {
+                    case 'success':
+                        toastrType = 'success';
+                        break;
+                    case 'error':
+                    case 'danger':
+                        toastrType = 'error';
+                        break;
+                    case 'warning':
+                        toastrType = 'warning';
+                        break;
+                    case 'info':
+                    default:
+                        toastrType = 'info';
+                }
+
+                // Mostrar la notificación con Toastr
+                toastr[toastrType]('{{ message }}');
+            {% endfor %}
+        });
+    </script>
+{% endif %}
+
+    <!-- Panel de Administración -->
+    <div class="admin-panel">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <ul class="sidebar-menu">
+                  {% if cargo|add:0 == 1 %}
+                <li><a href="#" class="botones active" id="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                {% endif %}
+                 <li><a href="#" class="botones" id="clientes"><i class="fas fa-person"></i> Clientes</a></li>
+
+                  <li><a href="#" class="botones" id="cotizaciones"><i class="fas fa-newspaper"></i> Cotizaciones</a></li>
+                  {% if cargo|add:0 == 1 %}
+                 <li><a href="#" class="botones" id="notas"><i class="fas fa-note-sticky"></i>Notas de Ventas</a></li>
+                 <li><a href="#" class="botones" id="ingresos"><i class="fas fa-coins"></i>Ingresos</a></li>
+                 <li><a href="#" class="botones" id="egresos"><i class="fas fa-cash-register"></i>Egresos</a></li>
+                 {% endif %}
+                <li><a href="#" class="botones" id="services"><i class="fas fa-concierge-bell"></i> Servicios</a></li>
+                <li><a href="#"  class="botones" id="categorias"><i class="fas fa-tools"></i> Categorias</a></li>
+                <!-- <li><a href="#"  class="botones" id="products"><i class="fas fa-shirt"></i> Productos</a></li> -->
+                 <li><a href="#"  class="botones" id="proveedores"><i class="fas fa-truck"></i> Proveedores</a></li>
+                <li><a href="#" class="botones" id="brands"><i class="fas fa-tags"></i> Marcas</a></li>
+                 {% if cargo|add:0 == 1 %}
+                <li><a href="#" class="botones" id="settings"><i class="fas fa-cog"></i> Configuración</a></li>
+                 {% endif %}
+            </ul>
+        </aside>
+
+
+        <!-- Contenido Principal -->
+        <main class="admin-content">
+
+              {% if cargo|add:0 == 1 %}
+            <!-- Dashboard -->
+            <section id="dashboard_tabla" name="dashboard_tabla" class="admin-section active">
+                <div class="section-header">
+                    <h2><i class="fas fa-tachometer-alt"></i> Dashboard</h2>
+                </div>
+
+                    <div class="controls">
+                 <ul class="filter-buttons">
+                    <a href="#" class="filter-btn" id="btn_captura_reportes"><i class="fas fa-camera-retro"></i>Captura</a>
+                    <input type="date" id="iniciop" name="iniciop" class="form-control" style="height: 50px;">
+
+                    <input type="date" id="finp" name="finp" class="form-control" style="height: 50px;">
+
+                    <a href="#" class="filter-btn" id="buscar_reportep"><i class="fas fa-folder-tree"></i>Buscar</a>
+                    </ul>
+                </div>
+
+                <div id="tablero_graficas">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="chart-container">
+                                            <canvas id="myBarChart" width="90%"></canvas>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="chart-container">
+                                            <canvas id="myBarChart2" width="90%" height="80%"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="chart-container">
+                                <div class="chart-header">
+                                    <h3>Ingresos por Mes</h3>
+                                </div>
+                                <div class="chart-wrapper">
+                                    <canvas id="monthlyChart"></canvas>
+                                </div>
+                </div>
+            </div>
+
+            </section>
+   {% endif %}
+   <!-- clientes -->
+            <section id="clientes_tabla" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-person"></i> Gestión de Clientes</h2>
+                    <button class="btn" id="addclienteBtn"><i class="fas fa-plus"></i> Agregar Nuevo Cliente</button>
+                </div>
+
+                <div class="table-container">
+                    <table id="clienteTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nombre</th>
+                                <th>Titular</th>
+                                <th>Detalles</th>
+                                <th>Correo</th>
+                                <th>Celular</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="clientesTableBody">
+                            <!-- Los servicios se cargarán aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+
+ <!-- cotizaciones -->
+            <style>
+                /* Encabezado */
+        .header {
+            text-align: left;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+
+        }
+
+        .company-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .company-info {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Fecha */
+        .fecha {
+            text-align: right;
+            margin: 25px 0;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .fecha-label {
+            color: #F7634D;
+        }
+
+        /* Destinatario */
+        .destinatario {
+            margin: 25px 0 40px 0;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .destinatario-label {
+            color: #F7634D;
+        }
+
+        /* Título principal */
+        .titulo-principal {
+            text-align: center;
+            margin: 40px 0;
+            font-size: 28px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+
+
+         /* Tabla */
+        .tabla-contenedor {
+            margin: 30px 0 50px 0;
+            width: 100%;
+        }
+
+        .tabla-productos {
+            width: 100%;
+            border-collapse: collapse;
+            border: 2px solid #333;
+        }
+
+        .tabla-productos th {
+            background-color: #f0f0f0;
+            border: 2px solid #333;
+            padding: 12px 8px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .tabla-productos td {
+            border: 1px solid #333;
+            padding: 10px 8px;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        .tabla-productos .col-detalle {
+            text-align: center;
+            width: 33%;
+            background-color: #575351;
+            color:#FFFFFF;
+        }
+
+         .tabla-productos .col-diseno {
+            text-align: center;
+            width: 33%;
+            background-color: #B0DFF7;
+            color:#F7634D;
+        }
+
+        .tabla-productos .col-diseno2 {
+            text-align: center;
+            width: 33%;
+            background-color: #B0DFF7;
+            color:#F7634D;
+        }
+
+        .tabla-productos .col-anular {
+            text-align: center;
+            width: 4%;
+            background-color: #918787;
+            color:#FFFFFF;
+        }
+        .tabla-productos .col-detalle2 {
+            text-align: left;
+            width: 33%;
+            background-color: #F2E6DF;
+            color:#292626;
+        }
+        .tabla-productos .col-talla {
+            width: 10%;
+            background-color: #575351;
+            color:#FFFFFF;
+        }
+
+        .tabla-productos .col-talla2 {
+            width: 10%;
+            background-color: #F2E6DF;
+            color:#292626;
+        }
+        .tabla-productos .col-cantidad {
+            width: 10%;
+            background-color: #575351;
+            color:#FFFFFF;
+        }
+
+        .tabla-productos .col-cantidad2 {
+            width: 10%;
+            background-color: #EBE9E6;
+            color:#292626;
+        }
+
+        /* Estilos para las pestañas */
+.tabs-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 0;
+}
+
+.tab-btn {
+    padding: 10px 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: #666;
+    position: relative;
+    transition: all 0.3s ease;
+    border-radius: 8px 8px 0 0;
+}
+
+.tab-btn:hover {
+    color: #007bff;
+    background-color: #f8f9fa;
+}
+
+.tab-btn.active {
+    color: #007bff;
+    background-color: #fff;
+    border-bottom: 3px solid #007bff;
+}
+
+.tab-badge {
+    display: inline-block;
+    background-color: #e0e0e0;
+    color: #666;
+    border-radius: 12px;
+    padding: 2px 8px;
+    font-size: 12px;
+    margin-left: 8px;
+    font-weight: normal;
+}
+
+.tab-btn.active .tab-badge {
+    background-color: #007bff;
+    color: white;
+}
+
+
+            </style>
+            <section id="cotizaciones_formulario" class="admin-section">
+
+                <div class="header">
+                    <div class="company-name">
+                    <img width="120" height="90" src="{% static 'biblioteca/logo/IMG-20251216-WA0012.jpg' %}">
+
+                    </div>
+                    <div class="company-info">
+                    Cels. 79949364 - 65070403<br>
+                    Av. Canal lsuto C/ Landivar Edif. Los Cedros<br>
+                    Santa Cruz - Bolivia
+                    </div>
+                    <div class="fecha">
+                    <button class="btn btn-danger" id="cerrar_formulario_cotizacion"><i class="fas fa-rectangle-xmark"></i></button>
+                    </div>
+                </div>
+            <form id="formulario_cotizacion" action="{% url 'registra_cotizacion' %}"  method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+
+
+
+
+            <div id="contenido_cotizacion">
+
+
+                  <input type="hidden" id="tipo" name="tipo" value="1">
+                     <input type="hidden" id="cotizacion_id" name="cotizacion_id" value="0">
+
+                <!-- Fecha (derecha) -->
+                <div class="fecha">
+                <span class="fecha-label">FECHA:</span>
+                <span id="fecha-actual"> <input type="date" id="fecha" name="fecha" class="form-control" required style="width:30%;"></span>
+                </div>
+
+                <!-- Destinatario -->
+                <div class="destinatario">
+                    <span class="destinatario-label">SEÑORES:</span>
+                    <input type="text" id="prospecto" name="prospecto" class="form-control" style="width:50%;" required>
+                </div>
+
+                <!-- Título principal -->
+                <div class="titulo-principal">
+                    COTIZACIÓN
+                </div>
+
+                  <!-- Tabla de productos -->
+                 <div class="table-container">
+                 <table class="tabla-productos">
+                    <thead>
+                    <tr>
+                        <th class="col-talla">CANT</th>
+                        <th class="col-detalle">DETALLE</th>
+                        <th class="col-cantidad">PRECIO UNI BS.</th>
+                        <th class="col-cantidad">TOTAL</th>
+                        <th class="col-diseno">DISEÑO</th>
+                        <td class="col-anular">ANULAR</td>
+
+                    </tr>
+                    </thead>
+                    <tbody id="body_cotizaciones">
+                    </tbody>
+                    <tfoot class="table-active text-right" >
+                                  <tr>
+                                        <td align="center"> <button type="button" class="btn btn-sm" id="btn-addFilacotizacion"> <span class="fa fa-plus"></span> </button></td>
+                                        <td>Totales</td>
+                                        <td><input type="text" class="form-control-plaintext text-right" id="total_unitario" name="total_unitario" value="0.00" disabled></td>
+                                        <td><input type="text" class="form-control-plaintext text-right" id="total_precio" name="total_precio" value="0.00" disabled></td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+
+                                  </tr>
+
+                              </tfoot>
+                    </table>
+                </div>
+
+                 <div class="destinatario">
+                    <span class="destinatario-label">Forma de pago:</span>
+                    <input type="text" id="forma" name="forma" class="form-control" style="width:30%;">
+                </div>
+
+                <div class="destinatario">
+                    <span class="destinatario-label">Tiempo de validez:</span>
+                    <input type="text" id="validez" name="validez" class="form-control" style="width:30%;">
+                </div>
+
+                <div class="destinatario">
+                    <span class="destinatario-label">Tiempo de entrega:</span>
+                    <input type="text" id="entrega" name="entrega" class="form-control" style="width:30%;">
+                </div>
+
+                <div class="modal-footer">
+                <button class="btn btn-success" type="submit">GRABAR COTIZACION</button>
+                </div>
+            </div>
+            </form>
+            </section>
+
+
+            <section id="cotizaciones_tabla" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-newspaper"></i> Lista de cotizaciones</h2>
+                    <button class="btn" id="agregar_cotizacion"><i class="fas fa-plus"></i> Nueva cotización</button>
+                </div>
+                        <div class="tabs-container">
+                        <a class="tab-btn active" id="pestana_total" name="pestana_total">
+                            <i class="fas fa-list"></i> Todas
+                             <span id="conta_total" name="conta_total" class="tab-badge">0</span>
+                        </a>
+                        <a class="tab-btn" id="pestana_pendiente" name="pestana_pendiente">
+                            <i class="fas fa-clock"></i> Pendientes
+                            <span id="conta_pendiente" name="conta_pendiente" class="tab-badge">0</span>
+                        </a>
+                        <a class="tab-btn" id="pestana_concretado" name="pestana_concretado">
+                            <i class="fas fa-check-circle"></i> Concretadas
+                            <span id="conta_concretado" name="conta_concretado" class="tab-badge">0</span>
+                        </a>
+                        </div>
+                <div class="table-container">
+                    <table id="cotizacionTable" name="cotizacionTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Codigo</th>
+                                <th>Prospecto</th>
+                                <th>Fecha</th>
+                                <th>Detalles</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
+                                <th>Entrega</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cotizacionTableBody">
+                            <!-- Los servicios se cargarán aquí -->
+                        </tbody>
+                    </table>
+                </div>
+
+            </section>
+
+
+
+
+ <!-- notas -->
+            <section id="notas_tabla" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-note-sticky"></i> Notas de Ventas de Clientes</h2>
+                    <button class="btn" id="addnotaBtn"><i class="fas fa-plus"></i> Nueva Nota de Venta</button>
+                </div>
+
+                <div class="table-container">
+                    <table id="notaTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Cliente</th>
+                                <th>Fecha</th>
+                                <th>Detalles</th>
+                                <th>Talla</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="notaTableBody">
+                            <!-- Los servicios se cargarán aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+
+
+ <!-- ingresos -->
+            <section id="ingresos_tabla" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-coins"></i> Recibos de Pagos recibidos</h2>
+                    <button class="btn" id="addingresoBtn" name="addingresoBtn"><i class="fas fa-plus"></i> Generar recibo</button>
+                </div>
+
+                <div class="table-container">
+                    <table id="ingresoTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Cliente</th>
+                                <th>Cotizacion</th>
+                                <th>Fecha</th>
+                                <th>Detalles</th>
+                                <th>Metodo pago</th>
+                                <th>Cantidad</th>
+                                <th>Total</th>
+                                <th>A cuenta</th>
+                                <th>Saldo</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ingresoTableBody" name="ingresoTableBody">
+
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+
+
+ <!-- egresos -->
+            <section id="egresos_tabla" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-cash-register"></i> Pagos realizados</h2>
+                    <button class="btn" id="addegresoBtn"><i class="fas fa-plus"></i> Realizar pago</button>
+                </div>
+
+                <div class="table-container">
+                    <table id="egresoTable" name="egresoTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Razon</th>
+                                <th>cotizacion</th>
+                                <th>Fecha</th>
+                                <th>Detalles</th>
+                                <th>Monto</th>
+                                <th>Respaldo</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="egresoTableBody" name="egresoTableBody">
+                            <!-- Los servicios se cargarán aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+
+
+            <!-- Servicios -->
+            <section id="services_tabla" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-concierge-bell"></i> Gestión de Servicios</h2>
+                    <button class="btn" id="addServiceBtn"><i class="fas fa-plus"></i> Agregar Nuevo Servicio</button>
+                </div>
+
+                <div class="table-container">
+                    <table id="servicesTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Título</th>
+                                <th>Descripción</th>
+                                <th>Imagen</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="servicesTableBody">
+                            <!-- Los servicios se cargarán aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- categorias -->
+            <section id="categoria_tabla" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-tools"></i> Gestión de Categorias</h2>
+                    <button class="btn" id="addcategoriaBtn"><i class="fas fa-plus"></i> Agregar Nueva Categoria</button>
+                </div>
+
+                <div class="table-container">
+                    <table id="categoriaTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                                <th>Imagen</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="categoriaTableBody">
+                            <!-- Los productos se cargarán aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+
+   <!-- Productos -->
+            <section id="products_tabla" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-shirt"></i>Gestión de Productos</h2>
+                    <button class="btn" id="addProductBtn"><i class="fas fa-plus"></i> Agregar Nuevo Producto</button>
+                </div>
+
+                <div class="table-container">
+                    <table id="productsTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                                <th>Precio</th>
+                                <th>Tallas</th>
+                                <th>colores</th>
+                                <th>Imagen1</th>
+                                <th>Imagen2</th>
+                                <th>Imagen3</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTableBody">
+                            <!-- Los productos se cargarán aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <!-- Marcas -->
+            <section id="brands_tabla" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-tags"></i> Gestión de Marcas</h2>
+                    <button class="btn" id="addBrandBtn"><i class="fas fa-plus"></i> Agregar Nueva Marca</button>
+                </div>
+
+                <div class="table-container">
+                    <table id="brandsTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nombre</th>
+                                <th>Logo</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="brandsTableBody">
+                            <!-- Las marcas se cargarán aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+
+             <!-- Proveedores -->
+            <section id="proveedores_tabla" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-truck-fast"></i> Gestión de Proveedores</h2>
+                    <button class="btn" id="addproveedorBtn"><i class="fas fa-plus"></i> Agregar Nuevo Proveedor</button>
+                </div>
+
+                <div class="table-container">
+                    <table id="proveedorTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nombre</th>
+                                <th>Titular</th>
+                                <th>Detalles</th>
+                                <th>Correo</th>
+                                <th>Celular</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="proveedorTableBody">
+                            <!-- Los servicios se cargarán aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+
+
+            <!-- Configuración -->
+            <section id="settings_tabla" class="admin-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-cog"></i> Configuración de usuarios</h2>
+                     <button class="btn" id="agregar_usuario"><i class="fas fa-plus"></i> Agregar Nuevo Usuario</button>
+                </div>
+
+               <div class="table-container">
+                    <table id="tabla_usuarios">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nombre</th>
+                                <th>Correo</th>
+                                <th>Usuario</th>
+                                <th>Contraseña</th>
+                                <th>Cargo</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="Body_usuarios">
+                            <!-- Las marcas se cargarán aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal para Servicios -->
+    <div id="serviceModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="serviceModalTitle">Agregar Nuevo Servicio</h3>
+                <button class="close-btn" id="closeServiceModal">&times;</button>
+            </div>
+            <form action="{% url 'registra_servicio' %}"  method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+            <div class="modal-body" id="body_servicios">
+
+                       <input type="hidden" id="tipos" name="tipos" value="1">
+                     <input type="hidden" id="servicio_id" name="servicio_id" value="0">
+
+
+                    <div class="form-group">
+                        <label for="serviceTitle">Título del Servicio *</label>
+                        <input type="text" id="serviceTitle" name="serviceTitle" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="serviceDescription">Descripción *</label>
+                        <textarea id="serviceDescription" name="serviceDescription" class="form-control" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="serviceImage">Imagen del servicio</label>
+                        <input type="file" id="serviceImage" name="serviceImage" class="form-control" accept=".jpg,.jpeg,.png,image/jpeg,image/png">
+
+                    </div>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-secondary" id="cancelServiceBtn">Cancelar</a>
+                <button class="btn btn-success" id="saveServiceBtn">Guardar Servicio</button>
+            </div>
+
+        </div>
+         </form>
+    </div>
+
+
+
+  <!-- Modal para Clientes -->
+    <div id="clienteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="clienteModalTitle">Agregar Nuevo Cliente</h3>
+                <button class="close-btn" id="closeclienteModal">&times;</button>
+            </div>
+            <form action="{% url 'registra_cliente' %}"  method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+            <div class="modal-body" id="body_clientes">
+
+                       <input type="hidden" id="tipocliente" name="tipocliente" value="1">
+                     <input type="hidden" id="cliente_id" name="cliente_id" value="0">
+
+
+                    <div class="form-group">
+                        <label for="serviceTitle">Nombre del Cliente *</label>
+                        <input type="text" id="nombrec" name="nombrec" class="form-control" required placeholder="Ejemplo: PIL ANDINA">
+                    </div>
+
+                     <div class="form-group">
+                        <label for="serviceTitle">Titular *</label>
+                        <input type="text" id="titularc" name="titularc" class="form-control" required placeholder="Ejemplo: Juanito Perez">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="serviceDescription">Descripción *</label>
+                        <textarea id="detallecliente" name="detallecliente" class="form-control" required placeholder="Ejemplo: Empresa de lacteos"></textarea>
+                    </div>
+
+                     <div class="form-group">
+                        <label for="serviceTitle">Correo *</label>
+                        <input type="email" id="correoC" name="correoC" class="form-control" required placeholder="Ejemplo: pilandina@gmail.com">
+                    </div>
+
+                     <div class="form-group">
+                        <label for="serviceTitle">Celular </label>
+                        <input type="text" id="celular" name="celular" class="form-control" placeholder="Ejemplo: 63344452">
+                    </div>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-secondary" id="cancelclienteBtn">Cancelar</a>
+                <button class="btn btn-success" >Guardar Cliente</button>
+            </div>
+
+        </div>
+         </form>
+    </div>
+
+
+ <!-- Modal para Notas -->
+    <div id="notaModal" name="notaModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="notaModalTitle">Agregar Nueva Nota</h3>
+                <button class="close-btn" id="closenotaModal">&times;</button>
+            </div>
+            <form id="form_notas" action="{% url 'registra_nota' %}"  method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+            <div class="modal-body" id="body_notas">
+
+                       <input type="hidden" id="tiponota" name="tiponota" value="1">
+                     <input type="hidden" id="nota_id" name="nota_id" value="0">
+
+
+                    <div class="form-group">
+                        <label for="serviceTitle">Cliente *</label>
+                        <select id="cliente" name="cliente" class="form-control" required>
+
+                        {% for cliente in clientes %}
+                        <option value="{{cliente.id}}">{{cliente.nombre}}</option>
+                        {% endfor%}
+                        </select>
+                    </div>
+
+                     <div class="form-group">
+                        <label for="serviceTitle">Fecha *</label>
+                        <input type="date" id="fechan" name="fechan" class="form-control" required>
+                    </div>
+
+                     <div class="table-responsive">
+                    <table id="tabla-registro" class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                            <td width="4%" height="31">#</td>
+                                            <td width="65%">ITEM</td>
+                                            <td>TALLA</td>
+                                            <td>CANTIDAD</td>
+                                            <td>MONTO</td>
+                                            <td width="5%">ANULAR</td>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-registro" >
+
+                                </tbody>
+                                <tfoot class="table-active text-right" >
+                                  <tr>
+                                        <td align="center"> <button type="button" class="btn btn-sm" id="btn-addFila"> <span class="fa fa-plus"></span> </button></td>
+                                        <td colspan="2">Totales</td>
+                                        <td><input type="text" class="form-control-plaintext text-right" id="total_general" name="total_general" value="0.00" disabled></td>
+                                        <td><input type="text" class="form-control-plaintext text-right" id="total_precion" name="total_precion" value="0.00" disabled></td>
+                                        <td>&nbsp;</td>
+
+                                  </tr>
+
+                              </tfoot>
+                            </table>
+                             </div>
+
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-secondary" id="cancelnotaBtn" name="cancelnotaBtn">Cancelar</a>
+                <button class="btn btn-success" >Registrar Nota</button>
+            </div>
+
+        </div>
+         </form>
+    </div>
+
+
+
+ <!-- Modal para Ingresos -->
+    <div id="ingresoModal" name="ingresoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="ingresoModalTitle">Agregar Nuevo Recibo</h3>
+                <button class="close-btn" id="closeingresoModal">&times;</button>
+            </div>
+            <form id="form_recibo" name="form_recibo" action="{% url 'registra_recibo' %}"  method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+            <div class="modal-body" id="body_ingresos">
+
+                       <input type="hidden" id="tiporecibo" name="tiporecibo" value="1">
+                     <input type="hidden" id="recibo_id" name="recibo_id" value="0">
+
+
+                    <div class="form-group">
+                        <label for="serviceTitle">Cliente *</label>
+                        <select id="clienter" name="clienter" class="form-control" required>
+
+                        {% for cliente in clientes %}
+                        <option value="{{cliente.id}}">{{cliente.nombre}}</option>
+                        {% endfor%}
+                        </select>
+                    </div>
+
+
+
+                        <div class="form-group">
+                        <label for="serviceTitle">Cotizacion *</label>
+                        <select id="cotizacionr" name="cotizacionr" class="form-control" required>
+                          <option value="" disabled selected>Seleccione una opcion</option>
+                        </select>
+                        </div>
+                        <a href="#" id="revicion_deuda" name="revicion_deuda" title="verificar historial de pagos"><i class="fas fa-coins"></i> Revisar pagos</a>
+
+
+                        <div id="alerta_recibo" name="alerta_recibo">
+
+                        </div>
+
+
+                     <div class="form-group">
+                        <label for="serviceTitle">Fecha *</label>
+                        <input type="date" id="fechai" name="fechai" class="form-control" required>
+                    </div>
+
+                     <div class="form-group">
+                        <label for="serviceTitle">Metodo de pago</label>
+                            <select id="metodo" name="metodo" class="form-control">
+                            <option value="Efectivo">Efectivo</option>
+                            <option value="Qr">Qr</option>
+                             <option value="Transferencia">Transferencia</option>
+                            </select>
+                        </div>
+
+                     <div class="table-responsive">
+                    <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                            <td width="4%" height="31">#</td>
+                                            <td width="65%">DETALLE</td>
+                                            <td>CANTIDAD</td>
+                                            <td>PRECIO</td>
+                                            <td width="5%">ANULAR</td>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-ingresos" name="tbody-ingresos">
+
+                                </tbody>
+                                <tfoot class="table-active text-right" >
+                                  <tr>
+                                        <td align="center"> <button type="button" class="btn btn-sm" id="btn-addFilai" name="btn-addFilai"> <span class="fa fa-plus"></span> </button></td>
+                                        <td colspan="1">Totales</td>
+                                        <td><input type="text" class="form-control-plaintext text-right" id="total_generali" name="total_generali" value="0.00" disabled></td>
+                                        <td><input type="text" class="form-control-plaintext text-right" id="total_precioi" name="total_precioi" value="0.00" disabled></td>
+                                        <td>&nbsp;</td>
+
+                                  </tr>
+
+                              </tfoot>
+                            </table>
+                             </div>
+
+                        <div class="form-group">
+                        <label for="serviceTitle">Porcentaje </label>
+                        <input type="text" id="porcentaje" name="porcentaje" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="serviceTitle">A cuenta </label>
+                        <input type="number" id="cuenta" name="cuenta" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="serviceTitle">Saldo </label>
+                        <input type="number" id="saldo" name="saldo" class="form-control">
+                    </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-secondary" id="cancelingresoBtn" name="cancelingresoBtn">Cancelar</a>
+                <button type="submit" class="btn btn-success" >Registrar Recibo</button>
+            </div>
+
+        </div>
+         </form>
+    </div>
+
+
+
+ <!-- Modal para Egresos -->
+    <div id="egresoModal" name="egresoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="egresoModalTitle">Agregar Nuevo Pago</h3>
+                <button class="close-btn" id="closeegresoModal">&times;</button>
+            </div>
+            <form action="{% url 'registra_pago' %}"  method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+            <div class="modal-body" id="body_egresos" name="body_egresos">
+
+                       <input type="hidden" id="tipopago" name="tipopago" value="1">
+                     <input type="hidden" id="egreso_id" name="egreso_id" value="0">
+                      <input type="hidden" id="cotizacion_id" name="cotizacion_id" value="0">
+
+
+                     <div class="form-group">
+                        <label for="serviceTitle">Fecha *</label>
+                        <input type="date" id="fechap" name="fechap" class="form-control" required>
+                    </div>
+
+                     <div class="table-container">
+                    <table class="tabla-egresos">
+                    <thead>
+                    <tr>
+                        <th class="col-talla">Razon</th>
+                        <th class="col-detalle">Detalle</th>
+                        <th class="col-cantidad">Monto</th>
+                        <th class="col-detalle">Respaldo</th>
+                        <th class="col-anular">Anular</th>
+
+                    </tr>
+                    </thead>
+                    <tbody id="body_egresos_tabla">
+                    </tbody>
+                    <tfoot class="table-active text-right" >
+                                  <tr>
+                                        <td align="center"> <button type="button" class="btn btn-sm" id="btn-addFilaegresos"> <span class="fa fa-plus"></span> </button></td>
+                                        <td>Totales</td>
+                                        <td><input type="text" class="form-control-plaintext text-right" id="total_monto" name="total_monto" value="0.00" disabled></td>
+                                        <td>&nbsp;</td>
+
+
+                                  </tr>
+
+                              </tfoot>
+                    </table>
+                </div>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-secondary" id="cancelegresoBtn" name="cancelegresoBtn">Cancelar</a>
+                <button type="submit" class="btn btn-success" >Registrar pago</button>
+            </div>
+
+        </div>
+         </form>
+    </div>
+
+    <!-- Modal para CATEGORIAS -->
+    <div id="CategoriaModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="CategoriaModalTitle">Agregar Nuevo Producto</h3>
+                <button class="close-btn" id="closeCategoriaModal">&times;</button>
+            </div>
+            <form action="{% url 'registra_categoria' %}"  method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+            <div class="modal-body" id="body_categoria" name="body_categoria">
+
+                    <input type="hidden" id="tipocategoria" name="tipocategoria" value="1">
+                     <input type="hidden" id="categoria_id" name="categoria_id" value="0">
+
+                    <div class="form-group">
+                        <label for="productName">Nombre de la Categoria *</label>
+                        <input type="text" id="categoriaName" name="categoriaName" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="productDescription">Descripción *</label>
+                        <textarea id="categoria_descripcion" name="categoria_descripcion" class="form-control" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="productIcon">Imagen</label>
+                        <input type="file" id="categoria_imagen" name="categoria_imagen" class="form-control" accept=".jpg,.jpeg,.png,image/jpeg,image/png">
+                    </div>
+
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-secondary" id="cancelCategoria">Cancelar</a>
+                <button class="btn btn-success" id="saveProductBtn">Guardar Categoria</button>
+            </div>
+        </div>
+          </form>
+    </div>
+
+
+ <!-- Modal para Proveedores -->
+    <div id="proveedorModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="proveedorModalTitle">Agregar Nuevo Proveedor</h3>
+                <button class="close-btn" id="closeproveedorModal">&times;</button>
+            </div>
+              <form action="{% url 'registra_proveedor' %}"  method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+            <div class="modal-body" id="body_proveedor">
+
+
+                    <input type="hidden" id="tipop" name="tipop" value="1">
+                     <input type="hidden" id="proveedor_id" name="proveedor_id" value="0">
+
+
+                    <div class="form-group">
+                        <label for="brandName">Nombre *</label>
+                        <input type="text" id="nombrep" name="nombrep" class="form-control" required>
+                    </div>
+
+                     <div class="form-group">
+                        <label for="brandName">Contacto</label>
+                        <input type="text" id="contacto" name="contacto" class="form-control" >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="brandName">Detalle</label>
+                        <textarea id="detalleP" name="detalleP" class="form-control" placeholder="Descripcion del proveedor"></textarea>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="brandName">correo</label>
+                        <input type="email" id="correoP" name="correoP" class="form-control" required placeholder="Ejemplo: pilandina@gmail.com">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="brandName">Celular</label>
+                        <input type="text" id="celularP" name="celularP" class="form-control" required placeholder="71325456">
+                    </div>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-secondary" id="cancelproveedorBtn" name="cancelproveedorBtn">Cancelar</a>
+                <button type="submit" class="btn btn-success" >Guardar Proveedor</button>
+            </div>
+
+        </div>
+          </form>
+    </div>
+
+
+
+  <!-- Modal para Productos -->
+  <!--  <div id="ItemModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="ItemModalTitle">Agregar Nuevo Producto</h3>
+                <button class="close-btn" id="closItemModal">&times;</button>
+            </div>
+            <form action="{% url 'registra_producto' %}"  method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+            <div class="modal-body" id="body_producto">
+
+                    <input type="hidden" id="tipo" name="tipo" value="1">
+                     <input type="hidden" id="producto_id" name="producto_id" value="0">
+
+                    <div class="form-group">
+                        <label for="productName">Nombre de la Categoria *</label>
+                        <input type="text" id="productName" name="productName" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="productDescription">Descripción *</label>
+                        <textarea id="productDescription" name="productDescription" class="form-control" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="productIcon">Imagen</label>
+                        <input type="file" id="productIcon" name="productIcon" class="form-control" accept=".jpg,.jpeg,.png,image/jpeg,image/png">
+                    </div>
+
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-secondary" id="cancelItemBtn">Cancelar</a>
+                <button class="btn btn-success" id="saveProductBtn">Guardar Categoria</button>
+            </div>
+        </div>
+          </form>
+    </div>-->
+    <!-- Modal para Marcas -->
+    <div id="brandModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="brandModalTitle">Agregar Nueva Marca</h3>
+                <button class="close-btn" id="closeBrandModal">&times;</button>
+            </div>
+              <form action="{% url 'registra_marca' %}"  method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+            <div class="modal-body" id="body_marca">
+
+
+                    <input type="hidden" id="tipom" name="tipom" value="1">
+                     <input type="hidden" id="marca_id" name="marca_id" value="0">
+
+
+                    <div class="form-group">
+                        <label for="brandName">Nombre de la Marca *</label>
+                        <input type="text" id="brandName" name="brandName" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="brandLogo">Imagen</label>
+                        <input type="file" id="brandLogo" name="brandLogo" class="form-control" accept=".jpg,.jpeg,.png,image/jpeg,image/png">
+
+                    </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-secondary" id="cancelBrandBtn">Cancelar</a>
+                <button type="submit" class="btn btn-success" id="saveBrandBtn">Guardar Marca</button>
+            </div>
+
+        </div>
+          </form>
+    </div>
+
+
+
+
+  <!-- Modal para USUARIOS -->
+    <div id="UsuarioModal" name="UsuarioModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="UsuarioModalTitle">Agregar Nuevo Usuario</h3>
+                <button class="close-btn" id="closeusuarioModal">&times;</button>
+            </div>
+            <form action="{% url 'registra_usuarios' %}"  method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+            <div class="modal-body" id="modalbody_usuarios">
+
+                       <input type="hidden" id="tipousuario" name="tipousuario" value="1">
+                     <input type="hidden" id="usuario_id" name="usuario_id" value="0">
+
+
+                    <div class="form-group">
+                        <label for="serviceTitle">Nombre del Usuario *</label>
+                        <input type="text" id="nombre" name="nombre" class="form-control" required placeholder="Ejemplo: Melissa Figueroa">
+                    </div>
+
+                     <div class="form-group">
+                        <label for="serviceTitle">correo</label>
+                        <input type="email" id="correo" name="correo" class="form-control" placeholder="Ejemplo: melissa@gmail.com">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="serviceDescription">Username *</label>
+                        <input type="text" id="username" name="username" class="form-control" required placeholder="Ejemplo:MFIGUEROA">
+                    </div>
+
+                     <div class="form-group">
+                        <label for="serviceTitle">Contraseña *</label>
+                        <input type="password" id="password" name="password" class="form-control" required placeholder="Ejemplo: admin123">
+                    </div>
+
+
+                     <div class="form-group">
+                        <label for="serviceTitle">Cargo *</label>
+                        <select id="cargou" name="cargou" class="form-control" required>
+                        <option value="1">Administrador</option>
+                        <option value="2">Trabajador</option>
+                        </select>
+                    </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-secondary" id="boton_cancelar_usuario" name="boton_cancelar_usuario">Cancelar</a>
+                <button class="btn btn-success" >Guardar Usuario</button>
+            </div>
+
+        </div>
+         </form>
+    </div>
+
+
+
+<script>
+
+
+
+function graficos(){
+
+
+    var inicio = $('#iniciop').val();
+    var fin = $('#finp').val();
+
+        if (inicio==''  || fin=='') {
+              ruta ="/configuracion/grafico/";
+        }else{
+               ruta ="/configuracion/grafico_reporte/" + inicio + "+" + fin + "/";
+        }
+
+ return $.ajax({
+      url: host + ruta,
+      method: 'GET',
+      success: function (response) {
+        const ctx = document.getElementById('myBarChart').getContext('2d');
+
+        if (myChart) {
+                myChart.destroy();
+                myChart = null;
+            }
+
+          // Formatear meses para mostrar mejor
+            const mesesFormateados = response.meses.map(mes => {
+                const [anio, mesNum] = mes.split('-');
+                const mesesNombres = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+                                      'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+                return `${mesesNombres[parseInt(mesNum)-1]} ${anio}`;
+            });
+
+        // Calcular saldo (ingresos - egresos)
+        const saldo = response.ingresos.map((ingreso, index) => ingreso - response.egresos[index]);
+
+        // Configurar colores
+        const colorIngresos = 'rgba(40, 167, 69, 0.8)';  // Verde
+        const colorEgresos = 'rgba(220, 53, 69, 0.8)';   // Rojo
+        const colorSaldo = 'rgba(0, 123, 255, 0.8)';     // Azul
+
+    // Crear gráfico
+    myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: mesesFormateados,
+            datasets: [
+                {
+                    label: 'Ingresos',
+                    data: response.ingresos,
+                    backgroundColor: colorIngresos,
+                    borderColor: colorIngresos,
+                    borderWidth: 1,
+                    order: 3
+                },
+                {
+                    label: 'Egresos',
+                    data: response.egresos,
+                    backgroundColor: colorEgresos,
+                    borderColor: colorEgresos,
+                    borderWidth: 1,
+                    order: 2
+                },
+                {
+                    label: 'Saldo',
+                    data: saldo,
+                    type: 'line',
+                    borderColor: colorSaldo,
+                    backgroundColor: 'transparent',
+                    borderWidth: 3,
+                    pointBackgroundColor: colorSaldo,
+                    pointRadius: 5,
+                    pointHoverRadius: 8,
+                    order: 1,
+                    yAxisID: 'y-line'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+
+            interaction: {
+                mode: 'index',
+                intersect: false
+            },
+            scales: {
+                x: {
+                    grid: {
+                        display: false
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Monto (Bs)'
+                    },
+                    ticks: {
+                        callback: function(value) {
+                            return 'Bs.' + value.toLocaleString('es-ES');
+                        }
+                    }
+                },
+                'y-line': {
+                    position: 'right',
+                    beginAtZero: true,
+                    grid: {
+                        drawOnChartArea: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Saldo (Bs)'
+                    },
+                    ticks: {
+                        callback: function(value) {
+                            return 'Bs' + value.toLocaleString('es-ES');
+                        }
+                    }
+                }
+            },
+            plugins: {
+                title: {
+                display: true,
+                text: 'FINANZAS GUARA - ultimos 6 meses',
+                font: {
+                  size: 20
+                },
+                color: '#402E12'
+              },
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed.y !== null) {
+                                label += new Intl.NumberFormat('es-ES', {
+                                    style: 'currency',
+                                    currency: 'BOB'
+                                }).format(context.parsed.y);
+                            }
+                            return label;
+                        }
+                   }
+               }
+           }
+        }
+        });
+    }
+
+   });
+
+}
+
+
+
+function graficos2(){
+
+
+    var inicio = $('#iniciop').val();
+    var fin = $('#finp').val();
+
+        if (inicio==''  || fin=='') {
+            ruta ="/configuracion/grafico2/";
+        }else{
+
+           ruta = "/configuracion/grafico2_reporte/"+ inicio + "+" + fin + "/";
+        }
+
+
+
+             return $.ajax({
+      url: host + ruta,
+      method: 'GET',
+      success: function (response) {
+        const ctx = document.getElementById('myBarChart2').getContext('2d');
+
+if (myChart2) {
+                myChart2.destroy();
+                myChart2 = null;
+            }
+            // 2. Limpiar el contexto del canvas
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        // Crear gradientes
+        const gradAsignado = ctx.createLinearGradient(0, 0, 0, 400);
+        gradAsignado.addColorStop(0, '#BCD66B');
+
+
+         // Arreglos para bordes y alertas
+        const borderColorUtilizado = [];
+        const alertas = []; // 'none', 'amarillo', 'rojo'
+
+
+
+
+                myChart2 = new Chart(ctx, {
+                  type: 'bar',
+                  data: {
+                    labels: response.labels,
+                    datasets: [
+                      {
+                        label: 'INGRESOS POR CLIENTES',
+                        backgroundColor: gradAsignado,
+                        hoverBackgroundColor: gradAsignado,
+                        borderRadius: 5,
+                        barThickness: 30,
+                        data: response.ventas
+                      }
+                    ]
+                  },
+                  options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                      title: {
+                        display: true,
+                        text: 'Clientes Guara - ultimos 6 meses',
+                        font: {
+                          size: 20
+                        },
+                        color: '#402E12'
+                      },
+                      legend: {
+                        position: 'top',
+                        labels: {
+                          font: {
+                            size: 14
+                          },
+                          color: '#BA7E00'
+                        }
+                      }
+                    },
+                    scales: {
+                      y: {
+                        beginAtZero: true,
+                        grid: {
+                          color: '#f0f0f0'
+                        }
+                      },
+                      x: {
+                        grid: {
+                          display: false
+                        },
+                        ticks: {
+                          font: {
+                            weight: 'bold',
+                            size: 12
+                          },
+                          color: '#4F2007'
+                        }
+                      }
+                    },
+                    animation: {
+                      duration: 0
+                    }
+                  },
+                          plugins: [{
+                                    afterDatasetsDraw: function (chart) {
+                                      const ctx = chart.ctx;
+                                      const meta = chart.getDatasetMeta(1); // dataset de utilizado
+                                      ctx.font = 'bold 18px Arial';
+
+                                              alertas.forEach((tipo, index) => {
+                                                const bar = meta.data[index];
+                                                if (!bar) return;
+
+                                              });
+                                    }
+                          }]
+                });
+      }
+    });
+
+
+
+
+}
+
+
+
+  // Inicializar gráfico mensual
+
+  function graficos3() {
+
+    var inicio = $('#iniciop').val();
+    var fin = $('#finp').val();
+
+        if (inicio==''  || fin=='') {
+              ruta ="/configuracion/grafico/";
+        }else{
+               ruta ="/configuracion/grafico_reporte/" + inicio + "+" + fin + "/";
+        }
+
+ return $.ajax({
+      url: host + ruta,
+      method: 'GET',
+      success: function (response) {
+
+            const ctx = document.getElementById('monthlyChart').getContext('2d');
+
+               if (myChart3) {
+                myChart3.destroy();
+                myChart3 = null;
+            }
+
+          // Formatear meses para mostrar mejor
+            const mesesFormateados = response.meses.map(mes => {
+                const [anio, mesNum] = mes.split('-');
+                const mesesNombres = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+                                      'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+                return `${mesesNombres[parseInt(mesNum)-1]} ${anio}`;
+            });
+
+            myChart3 = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: mesesFormateados,
+                    datasets: [{
+                        label: 'Ingresos (Bs)',
+                        data: response.ingresos,
+                        borderColor: '#2c5aa0',
+                        backgroundColor: 'rgba(44, 90, 160, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: true }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return 'Bs ' + value/1000 + 'k';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+      });
+}
+
+let myChart = null;
+let myChart2 = null;
+let myChart3 = null;
+
+$(document).ready(function () {
+
+    let host = "http://127.0.0.1:8000/";
+
+    graficos();
+       graficos2();
+
+       graficos3();
+
+
+$(document).on("click", "#buscar_reportep", function () {
+
+    graficos();
+    graficos2();
+
+    graficos3();
+
+    });
+});
+
+
+       function downloadCanvas(filename) {
+    var domElement = document.getElementById('tablero_graficas');
+
+    html2canvas(domElement).then(function(domElementCanvas) {
+        var link = document.createElement('a');
+        link.href = domElementCanvas.toDataURL("image/png");
+        link.download = filename;
+        link.click();
+    }).catch(function(error) {
+        console.error("Error al generar la imagen:", error);
+    });
+}
+</script>
+
+
+<script type="text/javascript">
+  (function(d, t) {
+      var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+      v.onload = function() {
+        window.voiceflow.chat.load({
+          verify: { projectID: '697a08db0cc5c60e8cef4f52' },
+          url: 'https://general-runtime.voiceflow.com',
+          versionID: 'production',
+          voice: {
+            url: "https://runtime-api.voiceflow.com"
+          }
+        });
+      }
+      v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+  })(document, 'script');
+</script>
+</body>
+</html>
