@@ -68,7 +68,7 @@ $(document).on("click", "#btn_captura_reportes", function () {
                     <td><strong>${tarea.nombre}</strong></td>
                     <td>
                         <div style="width: 150px; height: 60px; display: flex; align-items: center; justify-content: center; background-color: #f8f9fa; border-radius: 4px;">
-                            <img src="https://guara.pythonanywhere.com/static/biblioteca/marcas/${tarea.imagen}" title="${tarea.nombre}" style="max-width: 120px; max-height: 40px;">
+                            <img src="https://guara-4mn7.onrender.com/static/biblioteca/marcas/${tarea.imagen}" title="${tarea.nombre}" style="max-width: 120px; max-height: 40px;">
                         </div>
                     </td>
                     <td>
@@ -273,7 +273,7 @@ $(document).on("click", "#eliminar_marca", function () {
                     <td>${tarea.detalle.substring(0, 100)}${tarea.detalle.length > 100 ? '...' : ''}</td>
                     <td>
                         <div style="width: 80px; height: 50px; overflow: hidden; border-radius: 4px;">
-                            <img src="https://guara.pythonanywhere.com/static/biblioteca/servicios/${tarea.imagen}" alt="${tarea.titulo}" style="width: 100%; height: 100%; object-fit: cover;">
+                            <img src="https://guara-4mn7.onrender.com/static/biblioteca/servicios/${tarea.imagen}" alt="${tarea.titulo}" style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
                     </td>
                     <td>
@@ -473,7 +473,7 @@ $(document).on("click", "#eliminar_servicio", function () {
                     <td>${tarea.detalle.substring(0, 100)}${tarea.detalle.length > 100 ? '...' : ''}</td>
                     <td>
                         <div style="width: 80px; height: 50px; overflow: hidden; border-radius: 4px;">
-                            <img src="https://guara.pythonanywhere.com/static/biblioteca/productos/${tarea.imagen}" alt="${tarea.nombre}" style="width: 100%; height: 100%; object-fit: cover;">
+                            <img src="https://guara-4mn7.onrender.com/static/biblioteca/productos/${tarea.imagen}" alt="${tarea.nombre}" style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
                     </td>
                     <td>
@@ -652,7 +652,7 @@ $(document).on("click", "#eliminar_categoria", function () {
                     <td>${tarea.detalle.substring(0, 100)}${tarea.detalle.length > 100 ? '...' : ''}</td>
                     <td>
                         <div style="width: 80px; height: 50px; overflow: hidden; border-radius: 4px;">
-                            <img src="https://guara.pythonanywhere.com/static/biblioteca/productos/${tarea.imagen}" alt="${tarea.nombre}" style="width: 100%; height: 100%; object-fit: cover;">
+                            <img src="https://guara-4mn7.onrender.com/static/biblioteca/productos/${tarea.imagen}" alt="${tarea.nombre}" style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
                     </td>
                     <td>
