@@ -62,7 +62,7 @@ def ingresar_guara(request):
            #     msg = "Acceso no autorizado"
         else:
             msg = "Usuario o contraseña incorrectos"
-            return redirect("configuracion")
+            
 
     return render(request, "accounts/sesion.html", {"msg": msg})
 

@@ -31,6 +31,7 @@ DEBUG = True
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'guara-4mn7.onrender.com').split(',')
 
 print(f"DEBUG is set to: {DEBUG}")
+print(f"BASE_DIR is set to: {BASE_DIR}")
 print(f"ALLOWED_HOSTS: {ALLOWED_HOSTS}")
 # Application definition
 
