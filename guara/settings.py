@@ -88,19 +88,13 @@ WSGI_APPLICATION = "guara.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 
-# Detectar si estamos en local o producción
-if 'DATABASE_URL' in os.environ:
-    DATABASES = {
-     'default': dj_database_url.config(conn_max_age=600)
-    }
-else:
-    # Desarrollo local con SQLite
-    DATABASES = {
+DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
+    
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
