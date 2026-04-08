@@ -93,11 +93,11 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# FORZAR SQLite siempre (ignorar DATABASE_URL)
+# Usar SQLite con ruta ABSOLUTA para evitar confusiones
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': '/app/db.sqlite3',  # Ruta ABSOLUTA dentro del contenedor
     }
 }
 
