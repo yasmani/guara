@@ -32,6 +32,7 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'guara-4mn7.onrender.com').split
 
 print(f"DEBUG is set to: {DEBUG}")
 print(f"BASE_DIR is set to: {BASE_DIR}")
+print(f"CORE_DIR is: {CORE_DIR}")
 print(f"ALLOWED_HOSTS: {ALLOWED_HOSTS}")
 # Application definition
 
@@ -91,7 +92,7 @@ WSGI_APPLICATION = "guara.wsgi.application"
 DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            'NAME': 'db.sqlite3',
         }
     }
     
