@@ -1,6 +1,7 @@
 #!/bin/bash
 # start.sh
 
+
 echo "Ejecutando migraciones..."
 python manage.py migrate --noinput
 python manage.py makemigrations --noinput
