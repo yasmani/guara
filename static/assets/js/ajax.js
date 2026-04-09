@@ -1,5 +1,5 @@
 
-let host = "https://www.guara.com.bo/";
+let host = "https://www.guara.com.bo";
 
 
 
