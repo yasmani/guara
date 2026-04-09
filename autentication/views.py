@@ -12,6 +12,21 @@ import json
 
 
 
+def listar_tablas(request):
+    with connections['default'].cursor() as cursor:
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;")
+        tablas = cursor.fetchall()
+        
+        resultado = "=== TABLAS EN LA BASE DE DATOS ===\n"
+        for tabla in tablas:
+            resultado += f"- {tabla[0]}\n"
+            
+            # Contar registros en cada tabla
+            cursor.execute(f"SELECT COUNT(*) FROM {tabla[0]}")
+            count = cursor.fetchone()[0]
+            resultado += f"  Registros: {count}\n"
+    
+    return HttpResponse(f"<pre>{resultado}</pre>")
 
 def inicio_view(request):
     print("=== DIAGNÓSTICO DE inicio_view ===")

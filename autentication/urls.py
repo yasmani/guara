@@ -1,9 +1,10 @@
 
 
 from django.urls import path
-from .views import login_view,logout_view,inicio_view,ingresar_guara,enviar_whatsapp_directo,ver_categoria
+from .views import login_view,logout_view,inicio_view,ingresar_guara,enviar_whatsapp_directo,ver_categoria,listar_tablas
 urlpatterns = [
     path('', inicio_view, name="inicio"),
+    path('tablas/', listar_tablas, name='listar_tablas'),
     path('login/', login_view, name="login_guara"),
     path('ingresar_guara', ingresar_guara, name="ingresar_guara"),
     path('enviar-whatsapp', enviar_whatsapp_directo, name='enviar_whatsapp'),
