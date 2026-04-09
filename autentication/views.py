@@ -12,33 +12,46 @@ import json
 
 
 
-def test_db(request):
-    """Vista temporal para diagnosticar la base de datos"""
-    from django.db import connections
-    
-    with connections["default"].cursor() as cursor:
-        # Ver todas las columnas
-        cursor.execute("PRAGMA table_info(home_usuarios)")
-        columns = cursor.fetchall()
-        print("=== COLUMNAS ===")
-        for col in columns:
-            print(col)
-        
-        # Ver todos los usuarios
-        cursor.execute("SELECT * FROM home_usuarios")
-        users = cursor.fetchall()
-        print("=== USUARIOS ===")
-        for user in users:
-            print(user)
-    
-    return HttpResponse("Revisa los logs de Render")
 
 def inicio_view(request):
-    marcas=listar_marcas()
-    servicios = listar_servicios()
-    categorias = listar_categorias()
-    primeras = primer_categoria()
-    return render(request, "accounts/login.html",{'marcas':marcas,'servicios':servicios,'categorias':categorias,'primeras':primeras})
+    print("=== DIAGNÓSTICO DE inicio_view ===")
+    
+    try:
+        marcas = listar_marcas()
+        print(f"✅ marcas encontradas: {len(marcas)}")
+        if marcas:
+            print(f"   Primera marca: {marcas[0]}")
+    except Exception as e:
+        print(f"❌ Error en listar_marcas: {e}")
+        marcas = []
+    
+    try:
+        servicios = listar_servicios()
+        print(f"✅ servicios encontrados: {len(servicios)}")
+    except Exception as e:
+        print(f"❌ Error en listar_servicios: {e}")
+        servicios = []
+    
+    try:
+        categorias = listar_categorias()
+        print(f"✅ categorias encontradas: {len(categorias)}")
+    except Exception as e:
+        print(f"❌ Error en listar_categorias: {e}")
+        categorias = []
+    
+    try:
+        primeras = primer_categoria()
+        print(f"✅ primeras encontradas: {len(primeras)}")
+    except Exception as e:
+        print(f"❌ Error en primer_categoria: {e}")
+        primeras = []
+    
+    return render(request, "accounts/login.html", {
+        'marcas': marcas,
+        'servicios': servicios,
+        'categorias': categorias,
+        'primeras': primeras
+    })
     
 def login_view(request):
     return render(request, "accounts/sesion.html")
