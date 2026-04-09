@@ -2,7 +2,7 @@
 from django.shortcuts import render, redirect
 from django.db import connections
 from .models import  listar_marcas,listar_servicios,listar_categorias,primer_categoria,buscar_categoria
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from urllib.parse import quote
@@ -10,6 +10,28 @@ from datetime import datetime
 from django.utils.timezone import now
 import json
 
+
+
+def test_db(request):
+    """Vista temporal para diagnosticar la base de datos"""
+    from django.db import connections
+    
+    with connections["default"].cursor() as cursor:
+        # Ver todas las columnas
+        cursor.execute("PRAGMA table_info(home_usuarios)")
+        columns = cursor.fetchall()
+        print("=== COLUMNAS ===")
+        for col in columns:
+            print(col)
+        
+        # Ver todos los usuarios
+        cursor.execute("SELECT * FROM home_usuarios")
+        users = cursor.fetchall()
+        print("=== USUARIOS ===")
+        for user in users:
+            print(user)
+    
+    return HttpResponse("Revisa los logs de Render")
 
 def inicio_view(request):
     marcas=listar_marcas()
