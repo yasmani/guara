@@ -8,6 +8,7 @@ def listar_marcas():
         cursor.execute("""
             SELECT *
             FROM marcas
+            WHERE estado='1'
         """)
 
         columns = [col[0] for col in cursor.description]
@@ -21,7 +22,7 @@ def listar_servicios():
         cursor.execute("""
             SELECT *
             FROM servicios
-            WHERE estado=1
+            WHERE estado='1'
         """)
         columns = [col[0] for col in cursor.description]
         libros = [dict(zip(columns, row)) for row in cursor.fetchall()]
@@ -33,7 +34,7 @@ def listar_categorias():
         cursor.execute("""
             SELECT *
             FROM categorias
-            WHERE estado=1
+            WHERE estado='1'
         """)
         columns = [col[0] for col in cursor.description]
         libros = [dict(zip(columns, row)) for row in cursor.fetchall()]
@@ -45,7 +46,7 @@ def primer_categoria():
         cursor.execute("""
             SELECT *
             FROM categorias
-            WHERE estado=1 LIMIT 1
+            WHERE estado='1' LIMIT 1
         """)
         row = cursor.fetchone()
         if row:

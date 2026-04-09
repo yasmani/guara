@@ -301,7 +301,7 @@ def eliminar_marca(request,valor):
         with connections['default'].cursor() as cursor:
             cursor.execute("""
                 UPDATE marcas
-                SET estado=0
+                SET estado='0'
                 WHERE id=%s
             """,[valor])
         respuesta="Se realizo con exito"
@@ -418,7 +418,7 @@ def eliminar_servicio(request,valor):
         with connections['default'].cursor() as cursor:
             cursor.execute("""
                 UPDATE servicios
-                SET estado=0
+                SET estado='0'
                 WHERE id=%s
             """,[valor])
         respuesta="Se realizo con exito"
@@ -521,7 +521,7 @@ def eliminar_usuario(request,valor):
         with connections['default'].cursor() as cursor:
             cursor.execute("""
                 UPDATE home_usuarios
-                SET estado=0
+                SET estado='0'
                 WHERE id=%s
             """,[valor])
         respuesta="Se realizo con exito"
@@ -636,7 +636,7 @@ def eliminar_cliente(request,valor):
         with connections['default'].cursor() as cursor:
             cursor.execute("""
                 UPDATE clientes
-                SET estado=0
+                SET estado='0'
                 WHERE id=%s
             """,[valor])
         respuesta="Se realizo con exito"
@@ -804,7 +804,7 @@ def eliminar_nota(request,valor):
         with connections['default'].cursor() as cursor:
             cursor.execute("""
                 UPDATE notas
-                SET estado=0
+                SET estado='0'
                 WHERE id=%s
             """,[valor])
         respuesta="Se realizo con exito"
@@ -1551,7 +1551,7 @@ def eliminar_cotizacion(request,valor):
         with connections['default'].cursor() as cursor:
             cursor.execute("""
                 UPDATE cotizaciones
-                SET estado=0
+                SET estado='0'
                 WHERE id=%s
             """,[valor])
         respuesta="Se realizo con exito"
@@ -2192,7 +2192,7 @@ def registra_recibo(request):
 
                         cursor.execute("""
                                 UPDATE recibos_detalle
-                                SET estado = 0
+                                SET estado ='0'
                                 WHERE recibo=%s
                             """, [recibo_id])
                         cantidad_contador=0
@@ -2238,7 +2238,7 @@ def eliminar_recibo(request,valor):
         with connections['default'].cursor() as cursor:
             cursor.execute("""
                 UPDATE recibos
-                SET estado=0
+                SET estado='0'
                 WHERE id=%s
             """,[valor])
         respuesta="Se realizo con exito"
@@ -3154,7 +3154,7 @@ def eliminar_pago(request,valor):
         with connections['default'].cursor() as cursor:
             cursor.execute("""
                 UPDATE egresos
-                SET estado=0
+                SET estado='0'
                 WHERE id=%s
             """,[valor])
         respuesta="Se realizo con exito"
@@ -3744,7 +3744,7 @@ def eliminar_categoria(request,valor):
         with connections['default'].cursor() as cursor:
             cursor.execute("""
                 UPDATE categorias
-                SET estado=0
+                SET estado='0'
                 WHERE id=%s
             """,[valor])
         respuesta="Se realizo con exito"
@@ -3851,7 +3851,7 @@ def eliminar_proveedor(request,valor):
         with connections['default'].cursor() as cursor:
             cursor.execute("""
                 UPDATE proveedor
-                SET estado=0
+                SET estado='0'
                 WHERE id=%s
             """,[valor])
         respuesta="Se realizo con exito"
@@ -3971,7 +3971,7 @@ def eliminar_producto(request,valor):
         with connections['default'].cursor() as cursor:
             cursor.execute("""
                 UPDATE productos
-                SET estado=0
+                SET estado='0'
                 WHERE id=%s
             """,[valor])
         respuesta="Se realizo con exito"
@@ -4200,7 +4200,7 @@ def mostrar_detalle(request,valor):
 
                                             </div>
                                             <div class="timeline-description">
-                                             <a href="https://guara.pythonanywhere.com/static/biblioteca/adjuntos/{detalle['adjunto']}" target="_blank"  title="Archivo adjunto">{detalle['adjunto']}</a>
+                                             <a href="https://www.guara.com.bo/static/biblioteca/adjuntos/{detalle['adjunto']}" target="_blank"  title="Archivo adjunto">{detalle['adjunto']}</a>
                                             </div>
                                             <div class="timeline-meta">
                                                 <div class="meta-item">
@@ -4234,7 +4234,7 @@ def mostrar_detalle(request,valor):
 
                                             </div>
                                             <div class="timeline-description">
-                                             <a href="https://guara.pythonanywhere.com/static/biblioteca/pagos/{gasto['respaldo']}" target="_blank"  title="Archivo adjunto">{gasto['respaldo']}</a>
+                                             <a href="https://www.guara.com.bo/static/biblioteca/pagos/{gasto['respaldo']}" target="_blank"  title="Archivo adjunto">{gasto['respaldo']}</a>
                                               <textarea class="vercomentarea">{gasto['detalle']}</textarea>
                                               <hr>
                                               Gastos: {gasto['monto']} Bs.
@@ -4324,7 +4324,7 @@ def revertir_contrato(request,valor):
             cursor.execute("""
                 UPDATE cotizaciones
                 SET cliente="", ncliente="",
-                estado = 1
+                estado = '1'
                 WHERE id=%s
             """,[valor])
         respuesta="Se realizo con exito"
@@ -4375,7 +4375,7 @@ def eliminar_adjuntos(request,valor):
         with connections['default'].cursor() as cursor:
             cursor.execute("""
                 UPDATE detalle_cotizaciones
-                SET estado=0
+                SET estado='0'
                 WHERE id=%s
             """,[valor])
         respuesta="Se realizo con exito"
@@ -4444,14 +4444,14 @@ def agregar_interaccion(request):
                         cursor.execute("""
                             UPDATE cotizaciones
                             SET cliente=%s, ncliente=%s,
-                            estado = 2
+                            estado = '2'
                             WHERE id=%s
                             """, [id_cliente,ncliente,id_auto])
                 messages.success(request, "Realizado con Exito.")
 
                 id_codificado = codificar_id(id_auto)
 
-                url_detalle = f"https://guara.pythonanywhere.com/configuracion/detalle_cotizacion/{id_codificado}/"
+                url_detalle = f"https://www.guara.com.bo/configuracion/detalle_cotizacion/{id_codificado}/"
 
                 return HttpResponseRedirect(url_detalle)
 
@@ -4479,7 +4479,7 @@ def grafico(request):
                 SUM(cuenta) as total_ingresos
             FROM recibos
             WHERE fecha >= %s
-            and estado=1
+            and estado='1'
             GROUP BY DATE_FORMAT(fecha, '%%Y-%%m')
             ORDER BY mes
         """, [fecha_inicio])
@@ -4494,7 +4494,7 @@ def grafico(request):
                 SUM(monto) as total_egresos
             FROM egresos
             WHERE fecha >= %s
-            and estado=1
+            and estado='1'
             GROUP BY DATE_FORMAT(fecha, '%%Y-%%m')
             ORDER BY mes
         """, [fecha_inicio])
@@ -4525,7 +4525,7 @@ def grafico_reporte(request,valor):
                 SUM(cuenta) as total_ingresos
             FROM recibos
             WHERE fecha BETWEEN %s AND %s
-            and estado=1
+            and estado='1'
             GROUP BY DATE_FORMAT(fecha, '%%Y-%%m')
             ORDER BY mes
         """, [inicio,fin])
@@ -4540,7 +4540,7 @@ def grafico_reporte(request,valor):
                 SUM(monto) as total_egresos
             FROM egresos
             WHERE fecha BETWEEN %s AND %s
-            and estado=1
+            and estado='1'
             GROUP BY DATE_FORMAT(fecha, '%%Y-%%m')
             ORDER BY mes
         """, [inicio,fin])
@@ -4567,9 +4567,9 @@ def grafico2(request):
         cursor.execute("""SELECT
                         p.nombre as clientes,
                         (SELECT SUM(o.cuenta) FROM recibos o
-                        WHERE o.estado=1 and o.fecha >= %s and o.cliente=p.id) AS ventasm
+                        WHERE o.estado='1' and o.fecha >= %s and o.cliente=p.id) AS ventasm
                     FROM clientes p
-                    WHERE p.estado = 1
+                    WHERE p.estado = '1'
                     GROUP BY p.nombre;
         """,[fecha_inicio])
         results = cursor.fetchall()
@@ -4595,9 +4595,9 @@ def grafico2_reporte(request, valor):
         cursor.execute("""SELECT
                         p.nombre as clientes,
                         (SELECT SUM(o.cuenta) FROM recibos o
-                        WHERE o.estado=1 and o.fecha  BETWEEN %s AND %s and o.cliente=p.id) AS ventasm
+                        WHERE o.estado='1' and o.fecha  BETWEEN %s AND %s and o.cliente=p.id) AS ventasm
                     FROM clientes p
-                    WHERE p.estado = 1
+                    WHERE p.estado = '1'
                     GROUP BY p.nombre;
         """,[inicio,fin])
         results = cursor.fetchall()

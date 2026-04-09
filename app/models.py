@@ -8,7 +8,7 @@ def listar_marcas():
         cursor.execute("""
             SELECT *
             FROM marcas
-            WHERE estado=1
+            WHERE estado='1'
         """)
         columns = [col[0] for col in cursor.description]
         libros = [dict(zip(columns, row)) for row in cursor.fetchall()]
@@ -19,7 +19,7 @@ def contador_marcas():
         cursor.execute("""
             SELECT count(id) as contador
             FROM marcas
-            WHERE estado=1
+            WHERE estado='1'
             """)
 
         row = cursor.fetchone()
@@ -51,7 +51,7 @@ def listar_servicios():
         cursor.execute("""
             SELECT *
             FROM servicios
-            WHERE estado=1
+            WHERE estado='1'
         """)
         columns = [col[0] for col in cursor.description]
         libros = [dict(zip(columns, row)) for row in cursor.fetchall()]
@@ -63,7 +63,7 @@ def contador_servicios():
         cursor.execute("""
             SELECT count(id) as contador
             FROM servicios
-            WHERE estado=1
+            WHERE estado='1'
             """)
 
         row = cursor.fetchone()
@@ -95,7 +95,7 @@ def listar_clientes():
         cursor.execute("""
             SELECT *
             FROM clientes
-            WHERE estado=1
+            WHERE estado='1'
         """)
         columns = [col[0] for col in cursor.description]
         libros = [dict(zip(columns, row)) for row in cursor.fetchall()]
@@ -107,7 +107,7 @@ def contador_clientes():
         cursor.execute("""
             SELECT count(id) as contador
             FROM clientes
-            WHERE estado=1
+            WHERE estado='1'
             """)
 
         row = cursor.fetchone()
@@ -139,7 +139,7 @@ def listado_usuarios():
         cursor.execute("""
             SELECT *
             FROM home_usuarios
-            WHERE estado=1
+            WHERE estado='1'
         """)
         columns = [col[0] for col in cursor.description]
         libros = [dict(zip(columns, row)) for row in cursor.fetchall()]
@@ -170,7 +170,7 @@ def listar_notas():
             SELECT n.*,c.nombre as ncliente
             FROM notas n
             LEFT JOIN clientes c on c.id=n.cliente
-            WHERE n.estado=1
+            WHERE n.estado='1'
         """)
         columns = [col[0] for col in cursor.description]
         libros = [dict(zip(columns, row)) for row in cursor.fetchall()]
@@ -213,18 +213,18 @@ def listar_cotizaciones():
             SELECT c.*,
        (SELECT COUNT(*)
         FROM detalle_cotizaciones cd
-        WHERE cd.cotizacion = c.id AND cd.estado = 1) as total_detalles_activos,
+        WHERE cd.cotizacion = c.id AND cd.estado = '1') as total_detalles_activos,
                (SELECT COUNT(*)
         FROM cotizaciones c2
-        WHERE c2.estado = 1 AND c2.estado <> 0) as total_pendientes,
+        WHERE c2.estado = 1 AND c2.estado <> '0') as total_pendientes,
        (SELECT COUNT(*)
         FROM cotizaciones c3
-        WHERE c3.estado = 2 AND c3.estado <> 0) as total_concretados,
+        WHERE c3.estado = 2 AND c3.estado <> '0') as total_concretados,
         (SELECT COUNT(*)
         FROM cotizaciones c4
-        WHERE c4.estado <> 0) as total_contador
+        WHERE c4.estado <> '0') as total_contador
         FROM cotizaciones c
-        WHERE c.estado <> 0
+        WHERE c.estado <> '0'
         """)
         columns = [col[0] for col in cursor.description]
         libros = [dict(zip(columns, row)) for row in cursor.fetchall()]
@@ -253,9 +253,9 @@ def revisar_cotizaciones(cliente):
             SELECT c.*,
        (SELECT COUNT(*)
         FROM detalle_cotizaciones cd
-        WHERE cd.cotizacion = c.id AND cd.estado = 1) as total_detalles_activos
+        WHERE cd.cotizacion = c.id AND cd.estado = '1') as total_detalles_activos
         FROM cotizaciones c
-        WHERE c.estado <> 0
+        WHERE c.estado <> '0'
         and c.cliente = %s
         """,[cliente])
         columns = [col[0] for col in cursor.description]
@@ -300,7 +300,7 @@ def listar_recibos():
             SELECT n.*,c.nombre as ncliente
             FROM recibos n
             LEFT JOIN clientes c on c.id=n.cliente
-            WHERE n.estado=1
+            WHERE n.estado='1'
         """)
         columns = [col[0] for col in cursor.description]
         libros = [dict(zip(columns, row)) for row in cursor.fetchall()]
@@ -334,7 +334,7 @@ def revisar_pagos(cliente,cotizacion):
             LEFT JOIN clientes c on c.id=n.cliente
             WHERE n.cliente = %s
             and n.cotizacion = %s
-            and n.estado=1
+            and n.estado='1'
         """,[cliente,cotizacion])
         columns = [col[0] for col in cursor.description]
         libros = [dict(zip(columns, row)) for row in cursor.fetchall()]
@@ -347,7 +347,7 @@ def buscar_detalle_recibos(valor):
             SELECT *
             FROM recibos_detalle
             WHERE recibo=%s
-            and estado=1
+            and estado='1'
             """,[valor])
         columns = [col[0] for col in cursor.description]
         libros = [dict(zip(columns, row)) for row in cursor.fetchall()]
@@ -360,7 +360,7 @@ def buscar_saldo(valor):
         cursor.execute("""
             select saldo,fecha
             from recibos
-            where estado=1 and cliente=%s
+            where estado='1' and cliente=%s
             order by fecha desc limit 1
         """, [valor])
 
@@ -378,7 +378,7 @@ def listar_pagos():
         cursor.execute("""
             SELECT *
             FROM egresos
-            WHERE estado=1
+            WHERE estado='1'
         """)
         columns = [col[0] for col in cursor.description]
         libros = [dict(zip(columns, row)) for row in cursor.fetchall()]
@@ -407,7 +407,7 @@ def revisar_pagos_cotizacion(valor):
             SELECT e.*,h.nombre as nombre
             FROM egresos e
             LEFT JOIN home_usuarios h on h.id=e.usuario_carga
-            WHERE e.estado=1 and e.cotizacion=%s
+            WHERE e.estado='1' and e.cotizacion=%s
         """,[valor])
         columns = [col[0] for col in cursor.description]
         libros = [dict(zip(columns, row)) for row in cursor.fetchall()]
@@ -421,7 +421,7 @@ def listar_categorias():
         cursor.execute("""
             SELECT *
             FROM categorias
-            WHERE estado=1
+            WHERE estado='1'
         """)
         columns = [col[0] for col in cursor.description]
         libros = [dict(zip(columns, row)) for row in cursor.fetchall()]
@@ -451,7 +451,7 @@ def listar_proveedores():
         cursor.execute("""
             SELECT *
             FROM proveedor
-            WHERE estado=1
+            WHERE estado='1'
         """)
         columns = [col[0] for col in cursor.description]
         libros = [dict(zip(columns, row)) for row in cursor.fetchall()]
@@ -479,7 +479,7 @@ def listar_productos():
         cursor.execute("""
             SELECT *
             FROM productos
-            WHERE estado=1
+            WHERE estado='1'
         """)
         columns = [col[0] for col in cursor.description]
         libros = [dict(zip(columns, row)) for row in cursor.fetchall()]

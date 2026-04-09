@@ -12,21 +12,7 @@ import json
 
 
 
-def listar_tablas(request):
-    with connections['default'].cursor() as cursor:
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;")
-        tablas = cursor.fetchall()
-        
-        resultado = "=== TABLAS EN LA BASE DE DATOS ===\n"
-        for tabla in tablas:
-            resultado += f"- {tabla[0]}\n"
-            
-            # Contar registros en cada tabla
-            cursor.execute(f"SELECT COUNT(*) FROM {tabla[0]}")
-            count = cursor.fetchone()[0]
-            resultado += f"  Registros: {count}\n"
-    
-    return HttpResponse(f"<pre>{resultado}</pre>")
+
 
 def inicio_view(request):
     print("=== DIAGNÓSTICO DE inicio_view ===")
@@ -87,12 +73,12 @@ def ingresar_guara(request):
                     u.cargo as cargo
                    FROM home_usuarios u
                 WHERE u.username = %s AND u.password = %s
-                and u.estado=1
+                and u.estado='1'
             """, [username, password])
            user = cursor.fetchone()  # Obtiene el primer resultado
 
 
-        if not user:
+        if user:
             # Guardar datos en la sesión
             request.session["dpilogin"] = user[0]
             request.session["nombre"] = user[1]
