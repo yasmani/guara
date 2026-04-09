@@ -3,14 +3,16 @@ from django.db import connections
 
 
 def listar_marcas():
+    print("=== entro al models.py ===")
     with connections['default'].cursor() as cursor:
         cursor.execute("""
             SELECT *
             FROM marcas
-            WHERE estado=1
         """)
+
         columns = [col[0] for col in cursor.description]
         libros = [dict(zip(columns, row)) for row in cursor.fetchall()]
+        print(f"   resultado marcas: {libros}")
     return libros
 
 

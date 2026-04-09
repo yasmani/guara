@@ -484,7 +484,7 @@
                 <p>Brindamos soluciones integrales para las necesidades industriales de nuestros clientes</p>
             </div>
             <div class="services-grid">
-                 {% for servicio in servicios%}
+                 {% for servicio in servicios %}
 
                  <div class="service-card">
                     <div class="service-img">
@@ -515,7 +515,7 @@
             <div class="brands-slider">
                 <div class="brand-slide">
                     <!-- Marcas se duplican para efecto slider infinito -->
-                    {% for marca in marcas%}
+                    {% for marca in marcas %}
                     <div class="brand-item"><img src="{% static 'biblioteca/marcas/' %}{{marca.imagen}}" title="{{marca.nombre}}"></div>
 
                     {% endfor%}

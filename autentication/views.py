@@ -92,7 +92,7 @@ def ingresar_guara(request):
            user = cursor.fetchone()  # Obtiene el primer resultado
 
 
-        if user:
+        if not user:
             # Guardar datos en la sesión
             request.session["dpilogin"] = user[0]
             request.session["nombre"] = user[1]
