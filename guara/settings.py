@@ -1,41 +1,37 @@
 
-import os, environ
-import dj_database_url
-
-
-
+import os
+import sys
+import environ
+from pathlib import Path
 
 env = environ.Env(
-    # set casting, default value
     DEBUG=(bool, True)
 )
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+# SOLO UNA DEFINICIÓN DE BASE_DIR (esta es la correcta)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Agregar la carpeta 'app' al path
+APP_DIR = os.path.join(BASE_DIR, 'app')
+if os.path.exists(APP_DIR):
+    sys.path.insert(0, APP_DIR)
+
 CORE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Take environment variables from .env file
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-
-
-
-# Assets Management
-ASSETS_ROOT = os.getenv('ASSETS_ROOT', '/static/assets')
-
-# load production server from .env
+# Seguridad
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'clave-temporal-para-desarrollo')
-#DEBUG = os.environ.get('DEBUG', 'False') == 'True'
-DEBUG = True
+DEBUG = True  # O usa os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'guara-4mn7.onrender.com').split(',')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'guara-4mn7.onrender.com,localhost,127.0.0.1').split(',')
 
-print(f"DEBUG is set to: {DEBUG}")
-print(f"BASE_DIR is set to: {BASE_DIR}")
-print(f"CORE_DIR is: {CORE_DIR}")
+print(f"DEBUG: {DEBUG}")
+print(f"BASE_DIR: {BASE_DIR}")
 print(f"ALLOWED_HOSTS: {ALLOWED_HOSTS}")
-# Application definition
 
+# Application definition
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -45,7 +41,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "app",
     "autentication",
-
 ]
 
 MIDDLEWARE = [
@@ -60,9 +55,9 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "guara.urls"
-LOGIN_REDIRECT_URL = "home"  # Route defined in home/urls.py
-LOGOUT_REDIRECT_URL = "home"  # Route defined in home/urls.py
-TEMPLATE_DIR = os.path.join(CORE_DIR, "templates")  # ROOT dir for templates
+LOGIN_REDIRECT_URL = "home"
+LOGOUT_REDIRECT_URL = "home"
+TEMPLATE_DIR = os.path.join(CORE_DIR, "templates")
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -84,85 +79,48 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "guara.wsgi.application"
 
-
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-import os
-from pathlib import Path
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-# Usar SQLite con ruta ABSOLUTA para evitar confusiones
+# ============================================================
+# BASE DE DATOS - SOLO UNA VEZ, SIN DUPLICAR
+# ============================================================
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/app/db.sqlite3',  # Ruta ABSOLUTA dentro del contenedor
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
+# Diagnóstico de base de datos
+db_path = os.path.join(BASE_DIR, 'db.sqlite3')
+if os.path.exists(db_path):
+    print(f"✅ Base de datos encontrada en: {db_path}")
+    print(f"   Tamaño: {os.path.getsize(db_path)} bytes")
+else:
+    print(f"❌ Base de datos NO encontrada en: {db_path}")
 
 # Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
-
 # Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
-
 LANGUAGE_CODE = 'es-es'
-
-# TIME_ZONE = 'UTC'
 TIME_ZONE = 'America/La_Paz'
-
 USE_I18N = True
-
 USE_TZ = False
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
-
-STATIC_URL = "static/"
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-# default static files settings for PythonAnywhere.
-# see https://help.pythonanywhere.com/pages/DjangoStaticFiles for more info
-#MEDIA_ROOT = '/home/guara/guara/media'
-MEDIA_URL = '/media/'
-#STATIC_ROOT = '/home/guara/guara/static'
+# Static files
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_DIRS = (os.path.join(CORE_DIR, 'static'),)
 
-# Extra places for collectstatic to find static files.
-STATICFILES_DIRS = (
-    os.path.join(CORE_DIR, 'static'),
-)
+# Default primary key field type
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
-# Tiempo en segundos (ej. 300 segundos = 5 minutos)
+# Session settings
 SESSION_COOKIE_AGE = 1800
-
-# Que la sesión expire cuando se cierra el navegador (opcional)
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-
-# Renovar el tiempo solo si hay actividad (opcional pero recomendable)
 SESSION_SAVE_EVERY_REQUEST = True
