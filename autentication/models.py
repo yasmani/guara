@@ -57,6 +57,7 @@ def primer_categoria():
 
 def buscar_categoria(valor):
     valor=int(valor)
+    
     with connections['default'].cursor() as cursor:
         cursor.execute("""
             SELECT *

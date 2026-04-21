@@ -3750,6 +3750,7 @@ def registra_categoria(request):
 
 def eliminar_categoria(request,valor):
     valor=int(valor)
+    
     try:
 
         with connections['default'].cursor() as cursor:
