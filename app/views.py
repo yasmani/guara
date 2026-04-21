@@ -3681,6 +3681,17 @@ def lista_categorias(request):
     return JsonResponse({'tareas': tareas})
 
 
+def ver_todas_categorias(request):
+    from django.db import connections
+    from django.http import JsonResponse
+    
+    with connections['default'].cursor() as cursor:
+        cursor.execute("SELECT * FROM categorias ORDER BY id DESC LIMIT 10")
+        columns = [col[0] for col in cursor.description]
+        categorias = [dict(zip(columns, row)) for row in cursor.fetchall()]
+    
+    return JsonResponse({'categorias': categorias})
+
 def registra_categoria(request):
     if request.method == "POST":
         tipo = int(request.POST.get("tipocategoria", 1))
@@ -3709,7 +3720,7 @@ def registra_categoria(request):
                         INSERT INTO categorias
                         (nombre,detalle, imagen,estado,fecha_carga, usuario_carga)
                         VALUES (%s, %s,%s, %s, %s, %s)
-                        """, [categoriaName,categoria_descripcion, adjuntos_portada,1, fecha, usuario_registra])
+                        """, [categoriaName,categoria_descripcion, adjuntos_portada,'1', fecha, usuario_registra])
 
 
                 else:
@@ -3728,7 +3739,7 @@ def registra_categoria(request):
                     else:
                         messages.error(request, "ocurrio un error al modificar")
                         return redirect("configuracion")
-            messages.success(request, "Servicio guardado correctamente.")
+            messages.success(request, "Categoria guardado correctamente.")
             return redirect("configuracion")
         except Exception as e:
             messages.error(request, f"Ocurrió un error: {e}")
@@ -3753,8 +3764,9 @@ def eliminar_categoria(request,valor):
             return redirect("configuracion")
     return JsonResponse({'respuesta': respuesta})
 
-
+ 
 def editar_categoria(request,valor):
+    valor = int(valor)
     categoria= buscar_categoria(valor)
     str_html = ""
     if categoria:

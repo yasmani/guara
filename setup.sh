@@ -10,12 +10,12 @@ if [ -f db.sqlite3 ]; then
     
     # Verificar columnas de home_usuarios
     echo ""
-    echo "📋 Columnas de la tabla 'home_usuarios':"
-    sqlite3 db.sqlite3 "PRAGMA table_info(home_usuarios);"
+    echo "📋 Columnas de la tabla 'categorias':"
+    sqlite3 db.sqlite3 "PRAGMA table_info(categorias);"
     
     echo ""
-    echo "📋 Datos de la tabla 'home_usuarios':"
-    sqlite3 db.sqlite3 "SELECT * FROM home_usuarios LIMIT 5;"
+    echo "📋 Datos de la tabla 'categorias':"
+    sqlite3 db.sqlite3 "SELECT * FROM categorias LIMIT 5;"
 else
     echo "❌ db.sqlite3 NO encontrado"
     exit 1

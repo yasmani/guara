@@ -69,6 +69,7 @@ urlpatterns = [
 
      #---------------------------------CATEGORIAS-----------------------------------#
     path('configuracion/lista_categorias/', views.lista_categorias, name="lista_categorias"),
+    path('configuracion/ver_todas_categorias/', views.ver_todas_categorias, name="ver_todas_categorias"),
     path('registra_categoria/', views.registra_categoria, name='registra_categoria'),
     path('configuracion/editar_categoria/<int:valor>/', views.editar_categoria, name='editar_categoria'),
     path('configuracion/eliminar_categoria/<int:valor>/', views.eliminar_categoria, name='eliminar_categoria'),
