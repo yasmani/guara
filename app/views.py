@@ -266,7 +266,7 @@ def registra_marca(request):
                         INSERT INTO marcas
                         (nombre, imagen,estado,fecha_carga, usuario_carga)
                         VALUES (%s, %s, %s, %s, %s)
-                        """, [brandName, adjuntos_portada,1, fecha, usuario_registra])
+                        """, [brandName, adjuntos_portada,'1', fecha, usuario_registra])
 
 
                 else:
@@ -375,7 +375,7 @@ def registra_servicio(request):
                 for chunk in imagen.chunks():
                     destination.write(chunk)
             adjuntos_portada = imagen.name
-
+      
         try:
             with connections['default'].cursor() as cursor:
                 if tipo == 1:
@@ -383,7 +383,7 @@ def registra_servicio(request):
                         INSERT INTO servicios
                         (titulo,detalle, imagen,estado,fecha_carga, usuario_carga)
                         VALUES (%s, %s,%s, %s, %s, %s)
-                        """, [serviceTitle,serviceDescription, adjuntos_portada,1, fecha, usuario_registra])
+                        """, [serviceTitle,serviceDescription, adjuntos_portada,'1', fecha, usuario_registra])
 
 
                 else:
@@ -3749,7 +3749,7 @@ def registra_categoria(request):
 
 
 def eliminar_categoria(request,valor):
-
+    valor=int(valor)
     try:
 
         with connections['default'].cursor() as cursor:

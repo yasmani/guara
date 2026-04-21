@@ -421,11 +421,11 @@
         </div>
 
         <!-- Galería lenta automática -->
-        <div class="brands-slider2">
-            <div class="brand-slide2">
+        <div class="brands-slider"> 
+            <div class="brand-slide">
                 {% for categoria in categorias %}
                 <div class="brand-producto">
-                 <a class="categoria-link" data-categoria-id="{{categoria.id}}"><img src="{% static 'biblioteca/productos/' %}{{categoria.imagen}}" alt="{{categoria.nombre}}" title="{{categoria.nombre}}"> </a>
+                 <a class="categoria-link" data="{{categoria.id}}"><img src="{% static 'biblioteca/productos/' %}{{categoria.imagen}}"  title="{{categoria.nombre}}"> </a>
                 </div>
                 {% endfor %}
 
@@ -455,14 +455,7 @@
 </section>
 
 <script>
-    // Pausar animación al hacer hover
-    document.querySelector('.brands-slider2').addEventListener('mouseenter', function() {
-        this.querySelector('.brand-slide2').style.animationPlayState = 'paused';
-    });
-
-    document.querySelector('.brands-slider2').addEventListener('mouseleave', function() {
-        this.querySelector('.brand-slide2').style.animationPlayState = 'running';
-    });
+   
 
     // Efecto parallax suave
     window.addEventListener('scroll', function() {
@@ -1032,9 +1025,9 @@
             link.addEventListener('click', function(e) {
                 e.preventDefault();
 
-                const categoriaId = this.getAttribute('data-categoria-id');
+                const categoriaId = this.getAttribute('data');
 
-
+ 
                 // Enviar datos mediante fetch
                 fetch('/ver_categoria', {  // Asegúrate de que esta URL es correcta
                     method: 'POST',

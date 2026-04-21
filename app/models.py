@@ -417,6 +417,7 @@ def revisar_pagos_cotizacion(valor):
 #---------------------------------CATEGORIAS-----------------------------------#
 
 def listar_categorias():
+    print("=== listar_categorias ===")
     with connections['default'].cursor() as cursor:
         cursor.execute("""
             SELECT *
@@ -425,6 +426,9 @@ def listar_categorias():
         """)
         columns = [col[0] for col in cursor.description]
         libros = [dict(zip(columns, row)) for row in cursor.fetchall()]
+        print(f"Registros encontrados (estado='1'): {len(libros)}")
+        for libro in libros:
+            print(f"  - ID: {libro.get('id')}, Nombre: {libro.get('nombre')}, Estado: {libro.get('estado')}")
     return libros
 
 
