@@ -3749,7 +3749,7 @@ def registra_categoria(request):
 
 
 def eliminar_categoria(request,valor):
-    valor=int(valor)   
+ 
     try:
 
         with connections['default'].cursor() as cursor:
@@ -3766,7 +3766,7 @@ def eliminar_categoria(request,valor):
 
  
 def editar_categoria(request,valor):
-    valor = int(valor)
+   
     categoria= buscar_categoria(valor)
     str_html = ""
     if categoria:
@@ -4479,51 +4479,53 @@ def agregar_interaccion(request):
 
 
 
-def grafico(request):
-    # Definir período (últimos 6 meses por ejemplo)
-    fecha_inicio = datetime.now() - timedelta(days=360)
+from django.db import connections
+from datetime import datetime, timedelta
+from django.http import JsonResponse
 
-    with connection.cursor() as cursor:
-        # Obtener ingresos agrupados por mes
+def grafico(request):
+    # Definir período (últimos 360 días)
+    fecha_inicio = datetime.now() - timedelta(days=360)
+    
+    with connections['default'].cursor() as cursor:
+        # Obtener ingresos agrupados por mes (SQLite)
         cursor.execute("""
-            SELECT
-                DATE_FORMAT(fecha, '%%Y-%%m') as mes,
+            SELECT 
+                strftime('%Y-%m', fecha) as mes,
                 SUM(cuenta) as total_ingresos
             FROM recibos
-            WHERE fecha >= %s
-            and estado='1'
-            GROUP BY DATE_FORMAT(fecha, '%%Y-%%m')
+            WHERE fecha >= ? AND estado = '1'
+            GROUP BY strftime('%Y-%m', fecha)
             ORDER BY mes
-        """, [fecha_inicio])
-
+        """, [fecha_inicio.strftime('%Y-%m-%d %H:%M:%S')])
+        
         ingresos = cursor.fetchall()
         ingresos_dict = {row[0]: float(row[1]) for row in ingresos}
-
-        # Obtener egresos agrupados por mes
+        
+        # Obtener egresos agrupados por mes (SQLite)
         cursor.execute("""
-            SELECT
-                DATE_FORMAT(fecha, '%%Y-%%m') as mes,
+            SELECT 
+                strftime('%Y-%m', fecha) as mes,
                 SUM(monto) as total_egresos
             FROM egresos
-            WHERE fecha >= %s
-            and estado='1'
-            GROUP BY DATE_FORMAT(fecha, '%%Y-%%m')
+            WHERE fecha >= ? AND estado = '1'
+            GROUP BY strftime('%Y-%m', fecha)
             ORDER BY mes
-        """, [fecha_inicio])
-
+        """, [fecha_inicio.strftime('%Y-%m-%d %H:%M:%S')])
+        
         egresos = cursor.fetchall()
         egresos_dict = {row[0]: float(row[1]) for row in egresos}
-
+        
         # Combinar todos los meses únicos
         todos_meses = sorted(set(list(ingresos_dict.keys()) + list(egresos_dict.keys())))
-
+        
         # Preparar datos para el gráfico
         datos_grafico = {
             'meses': todos_meses,
             'ingresos': [ingresos_dict.get(mes, 0) for mes in todos_meses],
             'egresos': [egresos_dict.get(mes, 0) for mes in todos_meses]
         }
-
+        
         return JsonResponse(datos_grafico)
 
 
