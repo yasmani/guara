@@ -3749,7 +3749,7 @@ def registra_categoria(request):
 
 
 def eliminar_categoria(request,valor):
-    valor=int(valor)
+   
     
     try:
 
@@ -3767,7 +3767,7 @@ def eliminar_categoria(request,valor):
 
  
 def editar_categoria(request,valor):
-    valor = int(valor)
+
     categoria= buscar_categoria(valor)
     str_html = ""
     if categoria:

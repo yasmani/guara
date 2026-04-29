@@ -478,10 +478,10 @@ $(document).on("click", "#eliminar_servicio", function () {
                     </td>
                     <td>
                         <div class="actions">
-                            <a class="action-btn edit-btn edit-service" id="editar_categoria" data="${tarea.id}">
+                            <a class="action-btn edit-btn edit-service" id="editar_categoria" name="editar_categoria" data="${tarea.id}">
                                 <i class="fas fa-edit"></i> Editar
                             </a>
-                            <a class="action-btn delete-btn delete-service" id="eliminar_categoria" data="${tarea.id}">
+                            <a class="action-btn delete-btn delete-service" id="eliminar_categoria" name="eliminar_categoria" data="${tarea.id}">
                                 <i class="fas fa-trash"></i> Eliminar
                             </a>
                         </div>
